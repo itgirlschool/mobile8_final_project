@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile8_final_project/screens/product_screen.dart';
+import 'package:mobile8_final_project/screens/products_in_category_screen.dart';
 import 'package:mobile8_final_project/screens/profile_screen.dart';
 import 'package:mobile8_final_project/screens/support_screen.dart';
 
@@ -86,10 +86,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ProductScreen()),
+                      MaterialPageRoute(builder: (context) => const ProductsInCategoryScreen()),
                     );
                   },
-                  child: const Text('Экран продукта'),
+                  child: const Text('Экран продуктов в категории'),
                 ),
               ],
             ),
