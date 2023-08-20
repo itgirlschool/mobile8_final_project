@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../dto/cart_dto.dart';
+
 class CartRemoteDatasource {
   //CollectionReference carts = FirebaseFirestore.instance.collection('carts');
   FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -134,22 +136,22 @@ class CartRemoteDatasource {
     }
   }
 
-  // Future<CartDto> getCart() async {
-  //   try {
-  //     DocumentReference cartReference = firestore.collection('carts').doc(userId);
-  //     DocumentSnapshot cartSnapshot = await cartReference.get();
-  //     if (cartSnapshot.exists) {
-  //       var cart = cartSnapshot.data() as Map<String, dynamic>;
-  //       return CartDto.fromMap(cart);
-  //     } else {
-  //       throw Exception('empty cart');
-  //       //return CartDto();
-  //     }
-  //   } catch (e) {
-  //     //print('Ошибка при получении корзины: $e');
-  //     //return CartDto();
-  //     rethrow;
-  //   }
-  // }
+  Future<CartDto> getCart() async {
+    try {
+      DocumentReference cartReference = firestore.collection('carts').doc(userId);
+      DocumentSnapshot cartSnapshot = await cartReference.get();
+      if (cartSnapshot.exists) {
+        var cart = cartSnapshot.data() as Map<String, dynamic>;
+        return CartDto.fromMap(cart);
+      } else {
+        throw Exception('empty cart');
+        //return CartDto();
+      }
+    } catch (e) {
+      //print('Ошибка при получении корзины: $e');
+      //return CartDto();
+      rethrow;
+    }
+  }
 
 }
