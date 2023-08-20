@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../dto/cart_dto.dart';
+import '../dto/product_dto.dart';
 
 class CartRemoteDatasource {
-  //CollectionReference carts = FirebaseFirestore.instance.collection('carts');
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  //TODO: Переделать на получение id пользователя
+  //TODO: Переделать на получение id пользователя из Firebase
   String userId = '4';
 
-  Future<void> addProductToCart(Map<String, dynamic> product) async {
+  Future<void> addProductToCart(ProductDto productDto) async {
+    var product = productDto.toMap();
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
       DocumentSnapshot cartSnapshot = await cartReference.get();
@@ -69,12 +70,11 @@ class CartRemoteDatasource {
               'category': product['category'],
               'description': product['description'],
             },
-          }
+          },
+          'totalPrice': product['price'],
         });
       }
-      //print('Товар успешно добавлен в корзину!');
     } catch (e) {
-      // print('Ошибка при добавлении товара в корзину: $e');
     }
   }
 
@@ -90,7 +90,7 @@ class CartRemoteDatasource {
           var price = item.value['price'] as int;
           var quantity = item.value['quantity'] as int;
           if (item.key == productId && quantity > 1) {
-            print('Удаляем товар из корзины');
+            // Если количество товара больше 1, уменьшаем количество на 1
             totalPrice += price * (quantity - 1);
             newCart['products'][item.key] = {
               'name': item.value['name'],
@@ -101,6 +101,8 @@ class CartRemoteDatasource {
               'description': item.value['description'],
             };
           } else if (item.key != productId) {
+            // Если количество товара равно 1, удаляем его из корзины
+            // Если товар не тот, который нужно удалить, добавляем его в новую корзину
             totalPrice += price * quantity;
             newCart['products'][item.key] = {
               'name': item.value['name'],
@@ -117,9 +119,7 @@ class CartRemoteDatasource {
           newCart,
         );
       }
-      //print('Товар успешно удален из корзины!');
     } catch (e) {
-      //print('Ошибка при удалении товара из корзины: $e');
     }
   }
 
@@ -130,9 +130,7 @@ class CartRemoteDatasource {
       if (cartSnapshot.exists) {
         await cartReference.delete();
       }
-      //print('Товар успешно удален из корзины!');
     } catch (e) {
-      //print('Ошибка при удалении товара из корзины: $e');
     }
   }
 
@@ -145,11 +143,8 @@ class CartRemoteDatasource {
         return CartDto.fromMap(cart);
       } else {
         throw Exception('empty cart');
-        //return CartDto();
       }
     } catch (e) {
-      //print('Ошибка при получении корзины: $e');
-      //return CartDto();
       rethrow;
     }
   }
