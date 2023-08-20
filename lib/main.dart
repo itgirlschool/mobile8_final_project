@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobile8_final_project/data/datasource/cart_remote_datasource.dart';
 import 'package:mobile8_final_project/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'data/repositories/cart_repository.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -8,6 +11,9 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  GetIt.I.registerSingleton(CartRemoteDatasource());
+  GetIt.I.registerSingleton(CartRepository(GetIt.I.get()));
   runApp(const FoodShopApp());
 }
 
