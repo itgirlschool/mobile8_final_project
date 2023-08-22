@@ -36,7 +36,7 @@ class CartRepository {
 
   Future<void> removeAllProductsFromCart() async {
     try {
-      await _cartRemoteDatasource.removeAllProductsFromCart();
+      await _cartRemoteDatasource.clearCart();
     } catch (e) {
       print('Ошибка при удалении всех товаров из корзины: $e');
     }
