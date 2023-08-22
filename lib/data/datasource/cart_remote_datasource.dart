@@ -123,7 +123,7 @@ class CartRemoteDatasource {
     }
   }
 
-  Future<void> removeAllProductsFromCart() async {
+  Future<void> clearCart() async {
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
       DocumentSnapshot cartSnapshot = await cartReference.get();
