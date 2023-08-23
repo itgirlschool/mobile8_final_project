@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/data/datasource/cart_remote_datasource.dart';
 import 'package:mobile8_final_project/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mobile8_final_project/stripe_public_key.dart';
 import 'data/datasource/orders_remote_datasource.dart';
 import 'data/repositories/cart_repository.dart';
 import 'data/repositories/orders_repository.dart';
@@ -13,6 +15,9 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  Stripe.publishableKey = stripePublishableKey;
+  await Stripe.instance.applySettings();
 
   GetIt.I.registerSingleton(CartRemoteDatasource());
   GetIt.I.registerSingleton(CartRepository(GetIt.I.get()));
