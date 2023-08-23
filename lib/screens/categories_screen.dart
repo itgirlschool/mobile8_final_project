@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobile8_final_project/data/repositories/payment_repository.dart';
 import 'package:mobile8_final_project/screens/products_in_category_screen.dart';
 import 'package:mobile8_final_project/screens/profile_screen.dart';
 import 'package:mobile8_final_project/screens/support_screen.dart';
 
+import '../data/model/payment_model.dart';
 import 'login_screen.dart';
 import 'orders_history_screen.dart';
 
@@ -14,6 +17,18 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+  PaymentRepository _paymentRepository = PaymentRepository(GetIt.I.get());
+
+  @override
+  void initState() {
+    super.initState();
+    var result = _paymentRepository.pay(
+      Payment(
+        price: 100,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
