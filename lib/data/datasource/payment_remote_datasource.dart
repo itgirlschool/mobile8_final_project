@@ -19,6 +19,7 @@ class PaymentRemoteDatasource {
           });
 
       final jsonResponse = jsonDecode(response.body);
+      //print ('jsonResponse: $jsonResponse');
       Stripe.instance.resetPaymentSheetCustomer();
       //2. initialize the payment sheet
       await Stripe.instance.initPaymentSheet(

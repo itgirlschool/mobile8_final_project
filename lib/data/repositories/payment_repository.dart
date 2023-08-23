@@ -15,7 +15,7 @@ class PaymentRepository {
         email: email,
         price: payment.price,
       ));
-      print('result: $result');
+    //  print('result: $result');
       return result;
     } catch (e) {
       print('Ошибка при оплате: $e');

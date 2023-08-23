@@ -8,14 +8,10 @@
  */
 
  //Перейдите в терминале в папку functions и выполните npm install,  затем npm install stripe --save и, собственно, firebase deploy --only functions, чтобы передать в Firebase написанные выше функции.
-
-
-
 const {onRequest} = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
-//TODO: убрать ключ из публичного доступа
-const stripe = require("stripe")("INSERT_KEY_HERE");
 const functions = require("firebase-functions");
+const stripe = require("stripe")("INSERT_SEKRET_KEY_HERE");
 
 exports.stripePaymentIntentRequest = functions.https.onRequest(async (req, res) => {
     try {
@@ -47,7 +43,7 @@ exports.stripePaymentIntentRequest = functions.https.onRequest(async (req, res) 
         //Creates a new payment intent with amount passed in from the client
         const paymentIntent = await stripe.paymentIntents.create({
             amount: parseInt(req.body.amount),
-            currency: 'rub',
+            currency: 'usd',
             customer: customerId,
         })
 

@@ -17,18 +17,6 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  PaymentRepository _paymentRepository = PaymentRepository(GetIt.I.get());
-
-  @override
-  void initState() {
-    super.initState();
-    var result = _paymentRepository.pay(
-      Payment(
-        price: 100,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
