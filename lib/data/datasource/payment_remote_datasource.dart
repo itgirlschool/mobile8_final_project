@@ -19,7 +19,6 @@ class PaymentRemoteDatasource {
           });
 
       final jsonResponse = jsonDecode(response.body);
-      //print ('jsonResponse: $jsonResponse');
       Stripe.instance.resetPaymentSheetCustomer();
       //2. initialize the payment sheet
       await Stripe.instance.initPaymentSheet(
@@ -34,11 +33,12 @@ class PaymentRemoteDatasource {
       await Stripe.instance.presentPaymentSheet();
       return 'success';
     } catch (e) {
-      if (e is StripeException) {
-        throw 'Ошибка Stripe: ${e.error.localizedMessage}';
-      } else {
-        throw 'Ошибка: ${e.toString()}';
-      }
+      return 'error';
+      // if (e is StripeException) {
+      //   throw 'Ошибка Stripe: ${e.error.localizedMessage}';
+      // } else {
+      //   throw 'Ошибка: ${e.toString()}';
+      // }
     }
   }
 }

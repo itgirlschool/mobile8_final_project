@@ -11,7 +11,7 @@
 const {onRequest} = require("firebase-functions/v2/https");
 const logger = require("firebase-functions/logger");
 const functions = require("firebase-functions");
-const stripe = require("stripe")("INSERT_SEKRET_KEY_HERE");
+const stripe = require("stripe")("INSERT_SECRET_KEY_HERE");
 
 exports.stripePaymentIntentRequest = functions.https.onRequest(async (req, res) => {
     try {

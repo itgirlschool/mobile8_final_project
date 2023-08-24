@@ -15,11 +15,11 @@ class PaymentRepository {
         email: email,
         price: payment.price,
       ));
-    //  print('result: $result');
       return result;
     } catch (e) {
-      print('Ошибка при оплате: $e');
-      throw e;
+      return 'error';
+      // print('Ошибка при оплате: $e');
+      // throw e;
     }
   }
 }
