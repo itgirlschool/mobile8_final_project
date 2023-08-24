@@ -17,7 +17,7 @@ class PaymentRepository {
       ));
       return result;
     } catch (e) {
-      return 'error';
+      return e.toString();
       // print('Ошибка при оплате: $e');
       // throw e;
     }
