@@ -49,6 +49,8 @@ class DefaultFirebaseOptions {
     }
   }
 
+  //TODO: убрать ключи из публичного доступа
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCGBm-V-LeCTJ4lBOU4DinavRDcmvV_7CQ',
     appId: '1:199212111356:android:21c04b4f61972497a78e79',

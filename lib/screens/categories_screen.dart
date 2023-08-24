@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobile8_final_project/data/repositories/payment_repository.dart';
 import 'package:mobile8_final_project/screens/products_in_category_screen.dart';
 import 'package:mobile8_final_project/screens/profile_screen.dart';
 import 'package:mobile8_final_project/screens/support_screen.dart';
 
+import '../data/model/payment_model.dart';
 import 'login_screen.dart';
 import 'orders_history_screen.dart';
 
