@@ -1,16 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile8_final_project/data/datasource/cart_remote_datasource.dart';
 
 import '../dto/order_dto.dart';
 
 class OrdersRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  //TODO: Переделать на получение id пользователя из Firebase
-  String userId = '4';
+  User user = FirebaseAuth.instance.currentUser!;
 
   Future<void> addOrder() {
     CartRemoteDatasource cartRemoteDatasource = CartRemoteDatasource();
+    String userId = user.uid;
     return cartRemoteDatasource.getCart().then((cart) async {
       var order = OrderDto(
         products: cart.products,
@@ -31,6 +31,7 @@ class OrdersRemoteDatasource {
   }
 
   Future<List<OrderDto>> getOrders() async {
+    String userId = user.uid;
     try {
       CollectionReference ordersCollection = firestore.collection('orders');
       QuerySnapshot ordersSnapshot = await ordersCollection.doc(userId).collection('userOrders').get();
@@ -48,6 +49,7 @@ class OrdersRemoteDatasource {
   }
 
   Future<OrderDto> getOrderById(String orderId) async {
+    String userId = user.uid;
     try {
       CollectionReference ordersCollection = firestore.collection('orders');
       DocumentSnapshot orderSnapshot = await ordersCollection.doc(userId).collection('userOrders').doc(orderId).get();
