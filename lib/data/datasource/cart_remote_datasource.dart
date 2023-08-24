@@ -1,14 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../dto/cart_dto.dart';
 import '../dto/product_dto.dart';
 
 class CartRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  //TODO: Переделать на получение id пользователя из Firebase
-  String userId = '4';
+  User user = FirebaseAuth.instance.currentUser!;
 
   Future<void> addProductToCart(ProductDto productDto) async {
+    String userId = user.uid;
     var product = productDto.toMap();
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -80,6 +81,8 @@ class CartRemoteDatasource {
   }
 
   Future<void> removeProductFromCart(String productId) async {
+    String userId = user.uid;
+
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
       DocumentSnapshot cartSnapshot = await cartReference.get();
@@ -126,6 +129,8 @@ class CartRemoteDatasource {
   }
 
   Future<void> clearCart() async {
+    String userId = user.uid;
+
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
       DocumentSnapshot cartSnapshot = await cartReference.get();
@@ -138,6 +143,8 @@ class CartRemoteDatasource {
   }
 
   Future<CartDto> getCart() async {
+    String userId = user.uid;
+
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
       DocumentSnapshot cartSnapshot = await cartReference.get();

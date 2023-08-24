@@ -27,10 +27,10 @@ Future<void> main() async {
   GetIt.I.registerSingleton(CartRepository(GetIt.I.get()));
   GetIt.I.registerSingleton(OrdersRemoteDatasource());
   GetIt.I.registerSingleton(OrdersRepository(GetIt.I.get()));
-  GetIt.I.registerSingleton(PaymentRemoteDatasource());
-  GetIt.I.registerSingleton(PaymentRepository(GetIt.I.get()));
   GetIt.I.registerSingleton(UserRemoteDatasource());
   GetIt.I.registerSingleton(UserRepository(GetIt.I.get()));
+  GetIt.I.registerSingleton(PaymentRemoteDatasource());
+  GetIt.I.registerSingleton(PaymentRepository(GetIt.I.get(), GetIt.I.get()));
   runApp(const FoodShopApp());
 }
 
