@@ -33,7 +33,7 @@ class PaymentRemoteDatasource {
       await Stripe.instance.presentPaymentSheet();
       return 'success';
     } catch (e) {
-      return 'error';
+      return e.toString();
       // if (e is StripeException) {
       //   throw 'Ошибка Stripe: ${e.error.localizedMessage}';
       // } else {

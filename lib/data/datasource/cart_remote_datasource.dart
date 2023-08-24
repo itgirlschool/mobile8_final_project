@@ -75,6 +75,7 @@ class CartRemoteDatasource {
         });
       }
     } catch (e) {
+      throw Exception('addProductToCart error');
     }
   }
 
@@ -120,6 +121,7 @@ class CartRemoteDatasource {
         );
       }
     } catch (e) {
+      throw Exception('removeProductFromCart error');
     }
   }
 
@@ -131,6 +133,7 @@ class CartRemoteDatasource {
         await cartReference.delete();
       }
     } catch (e) {
+      throw Exception('clearCart error');
     }
   }
 
@@ -145,7 +148,7 @@ class CartRemoteDatasource {
         throw Exception('empty cart');
       }
     } catch (e) {
-      rethrow;
+      throw Exception('getCart error');
     }
   }
 
