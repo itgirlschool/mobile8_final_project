@@ -6,9 +6,10 @@ import '../dto/product_dto.dart';
 
 class CartRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  User user = FirebaseAuth.instance.currentUser!;
+
 
   Future<void> addProductToCart(ProductDto productDto) async {
+    User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
     var product = productDto.toMap();
     try {
@@ -81,6 +82,7 @@ class CartRemoteDatasource {
   }
 
   Future<void> removeProductFromCart(String productId) async {
+    User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
 
     try {
@@ -129,6 +131,7 @@ class CartRemoteDatasource {
   }
 
   Future<void> clearCart() async {
+    User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
 
     try {
@@ -143,6 +146,7 @@ class CartRemoteDatasource {
   }
 
   Future<CartDto> getCart() async {
+    User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
 
     try {
