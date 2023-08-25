@@ -43,7 +43,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             centerTitle: true,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
             actions: [
               isEdited
