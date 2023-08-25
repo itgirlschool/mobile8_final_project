@@ -7,9 +7,6 @@ String userName = 'Иван Иванов';
 String userPhone = '8934304243';
 String userAdress = 'Улица Что-то, город Какой-то';
 String userEmail = 'fdfd@sdfs.ru';
-late String newName;
-late String newPhone;
-late String newAdress;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
