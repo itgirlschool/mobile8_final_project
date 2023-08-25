@@ -6,9 +6,10 @@ import '../dto/order_dto.dart';
 
 class OrdersRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  User user = FirebaseAuth.instance.currentUser!;
+
 
   Future<void> addOrder() {
+    User user = FirebaseAuth.instance.currentUser!;
     CartRemoteDatasource cartRemoteDatasource = CartRemoteDatasource();
     String userId = user.uid;
     return cartRemoteDatasource.getCart().then((cart) async {
@@ -31,6 +32,7 @@ class OrdersRemoteDatasource {
   }
 
   Future<List<OrderDto>> getOrders() async {
+    User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
     try {
       CollectionReference ordersCollection = firestore.collection('orders');
@@ -49,6 +51,7 @@ class OrdersRemoteDatasource {
   }
 
   Future<OrderDto> getOrderById(String orderId) async {
+    User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
     try {
       CollectionReference ordersCollection = firestore.collection('orders');
