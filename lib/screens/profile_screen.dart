@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 bool isEdited = false;
 String userName = 'Иван Иванов';
 String userPhone = '8934304243';
-String userAdress = 'Улица Что-то, город Какой-то';
+String userAddress = 'Улица Что-то, город Какой-то';
 String userEmail = 'fdfd@sdfs.ru';
 
 class ProfileScreen extends StatefulWidget {
@@ -16,20 +16,30 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final _nameController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _addressController = TextEditingController();
+
   @override
   void initState() {
     isEdited = false;
+    _nameController.text = userName;
+    _phoneController.text = userPhone;
+    _addressController.text = userAddress;
     super.initState();
   }
 
   @override
+  void dispose() {
+    isEdited = false;
+    super.dispose();
+    _addressController.dispose();
+    _nameController.dispose();
+    _phoneController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _nameController = TextEditingController();
-    final _phoneController = TextEditingController();
-    final _adressController = TextEditingController();
-    _nameController.text = userName;
-    _phoneController.text = userPhone;
-    _adressController.text = userAdress;
     return Container(
       color: Theme.of(context).colorScheme.inversePrimary,
       child: SafeArea(
@@ -37,7 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: const Text('Профиль'),
-            centerTitle: true,
+            //centerTitle: true,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               onPressed: () {
@@ -52,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isEdited = false;
                           _nameController.text = userName;
                           _phoneController.text = userPhone;
-                          _adressController.text = userAdress;
+                          _addressController.text = userAddress;
                         });
                       },
                       child: const Text('Отменить'))
@@ -65,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: () {
                         setState(() {
                           isEdited = false;
-                          userAdress = _adressController.text;
+                          userAddress = _addressController.text;
                           userName = _nameController.text;
                           userPhone = _phoneController.text;
                         });
@@ -90,40 +100,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
           body: Container(
-            padding: const EdgeInsets.only(left: 10, right: 10),
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                TextFormField(
-                  controller: _nameController,
-                  readOnly: !isEdited,
-                  decoration: const InputDecoration(
-                    labelText: 'Имя пользователя',
-                  ),
-                ),
-                TextFormField(
-                  controller: _phoneController,
-                  readOnly: !isEdited,
-                  decoration: const InputDecoration(
-                    labelText: 'Телефон',
-                  ),
-                ),
-                TextFormField(
-                  controller: _adressController,
-                  readOnly: !isEdited,
-                  decoration: const InputDecoration(
-                    labelText: 'Адрес доставки',
-                  ),
-                ),
+                _buildTextFormField(controller: _nameController, context: context, isEdited: isEdited, labelText: 'Имя'),
+                _buildTextFormField(controller: _phoneController, context: context, isEdited: isEdited, labelText: 'Телефон'),
+                _buildTextFormField(controller: _addressController, context: context, isEdited: isEdited, labelText: 'Адрес доставки'),
                 TextFormField(
                   initialValue: userEmail,
                   readOnly: true,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Электронная почта',
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Theme.of(context).dividerColor),
+                    ),
                   ),
                 )
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextFormField({required TextEditingController controller, required BuildContext context, bool isEdited = false, required String labelText}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15),
+      child: TextFormField(
+        controller: controller,
+        readOnly: !isEdited,
+        decoration: InputDecoration(
+          labelText: labelText,
+          enabledBorder: isEdited
+              ? OutlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                )
+              : UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).dividerColor),
+                ),
+          focusedBorder: isEdited
+              ? const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                )
+              : UnderlineInputBorder(
+                  borderSide: BorderSide(color: Theme.of(context).dividerColor),
+                ),
         ),
       ),
     );
