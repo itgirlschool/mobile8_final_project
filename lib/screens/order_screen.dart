@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../data/model/order_model.dart';
+
 class OrderScreen extends StatefulWidget {
-  const OrderScreen({super.key});
+  final Order order;
+  const OrderScreen({super.key, required this.order});
 
   @override
   State<OrderScreen> createState() => _OrderScreenState();

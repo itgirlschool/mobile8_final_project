@@ -41,6 +41,7 @@ dependencies:
   get_it: ^7.6.0
   flutter_stripe: ^9.3.0
   http: ^1.1.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
