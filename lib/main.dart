@@ -14,6 +14,8 @@ import 'data/repositories/payment_repository.dart';
 import 'data/repositories/user_repository.dart';
 import 'firebase_options.dart';
 
+final getIt = GetIt.instance;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

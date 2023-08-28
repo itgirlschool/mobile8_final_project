@@ -10,8 +10,10 @@ class OrdersRemoteDatasource {
 
   Future<void> addOrder() {
     User user = FirebaseAuth.instance.currentUser!;
-    CartRemoteDatasource cartRemoteDatasource = CartRemoteDatasource();
     String userId = user.uid;
+    //String userId = '4';
+    CartRemoteDatasource cartRemoteDatasource = CartRemoteDatasource();
+
     return cartRemoteDatasource.getCart().then((cart) async {
       var order = OrderDto(
         products: cart.products,
@@ -32,8 +34,9 @@ class OrdersRemoteDatasource {
   }
 
   Future<List<OrderDto>> getOrders() async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
+    // User user = FirebaseAuth.instance.currentUser!;
+    // String userId = user.uid;
+    String userId = '4';
     try {
       CollectionReference ordersCollection = firestore.collection('orders');
       QuerySnapshot ordersSnapshot = await ordersCollection.doc(userId).collection('userOrders').get();
