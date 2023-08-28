@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile8_final_project/screens/product_screen.dart';
+import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 
 class ProductsInCategoryScreen extends StatefulWidget {
   const ProductsInCategoryScreen({super.key});
@@ -12,13 +13,10 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.inversePrimary,
+      color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: const Text('Категория продуктов'),
-          ),
+          appBar: const AppBarWidget(title: 'Название категории',),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

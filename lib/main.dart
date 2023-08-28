@@ -43,8 +43,11 @@ class FoodShopApp extends StatelessWidget {
       title: 'Магазин продуктов',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green).copyWith(
+          background: Color(0xFFFFFFFF),
+          surfaceTint: Colors.white,
+        ),
       ),
       home: const LoginScreen(),
     );

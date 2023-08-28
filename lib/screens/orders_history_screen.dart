@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 
 import '../data/model/order_model.dart';
 import '../data/model/product_model.dart';
@@ -96,16 +97,16 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.inversePrimary,
+      color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: const Text('Заказы'),
+          appBar: const AppBarWidget(
+            title: 'История заказов',
           ),
           body: Center(
             child: Container(
-              color: Colors.grey[300],
+               color: Colors.grey[200],
+
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
