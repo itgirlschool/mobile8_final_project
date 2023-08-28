@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
-
 import '../bloc/orders_history/orders_history_bloc.dart';
 import '../bloc/orders_history/orders_history_state.dart';
 import '../data/model/order_model.dart';
-import '../data/model/product_model.dart';
 import '../data/repositories/orders_repository.dart';
 import '../main.dart';
 
@@ -20,87 +17,6 @@ class OrdersHistoryScreen extends StatefulWidget {
 
 class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
   final _bloc = OrdersHistoryBloc(getIt<OrdersRepository>());
-
-  // final List<Order> orders = [
-  //   Order(
-  //     orderId: '1',
-  //     date: DateTime.now(),
-  //     status: 'Доставлен',
-  //     products: [
-  //       Product(
-  //         id: "1",
-  //         name: 'Молоко',
-  //         price: 100,
-  //         quantity: 1,
-  //         description: '1л',
-  //         category: 'Молочные продукты',
-  //         image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  //       ),
-  //       Product(
-  //         id: "2",
-  //         name: 'Хлеб',
-  //         price: 50,
-  //         quantity: 2,
-  //         description: 'Белый',
-  //         category: 'Хлебобулочные изделия',
-  //         image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  //       ),
-  //     ],
-  //     totalPrice: 150,
-  //   ),
-  //   Order(
-  //     orderId: '2',
-  //     date: DateTime.now(),
-  //     status: 'Доставлен',
-  //     products: [
-  //       Product(
-  //         id: "1",
-  //         name: 'Молоко Parmalat ffffffffff fffff fff',
-  //         price: 100,
-  //         quantity: 1,
-  //         description: '1л',
-  //         category: 'Молочные продукты',
-  //         image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  //       ),
-  //       Product(
-  //         id: "2",
-  //         name: 'Хлеб бородинский',
-  //         price: 50,
-  //         quantity: 2,
-  //         description: 'Белый',
-  //         category: 'Хлебобулочные изделия',
-  //         image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  //       ),
-  //     ],
-  //     totalPrice: 150,
-  //   ),
-  //   Order(
-  //     orderId: '3',
-  //     date: DateTime.now(),
-  //     status: 'Доставлен',
-  //     products: [
-  //       Product(
-  //         id: "1",
-  //         name: 'Молоко Parmalat',
-  //         price: 100,
-  //         quantity: 1,
-  //         description: '1л',
-  //         category: 'Молочные продукты',
-  //         image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  //       ),
-  //       Product(
-  //         id: "2",
-  //         name: 'Хлеб бородинский',
-  //         price: 50,
-  //         quantity: 2,
-  //         description: 'Белый',
-  //         category: 'Хлебобулочные изделия',
-  //         image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  //       ),
-  //     ],
-  //     totalPrice: 150,
-  //   ),
-  // ];
 
   @override
   Widget build(BuildContext context) {
