@@ -46,7 +46,7 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
       products: [
         Product(
           id: "1",
-          name: 'Молоко Parmalat',
+          name: 'Молоко Parmalat ffffffffff fffff fff',
           price: 100,
           quantity: 1,
           description: '1л',
@@ -171,9 +171,19 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
                           ),
                           child: Image.network(orders[index].products[i].image, width: 50, height: 50),
                         ),
-                        Text(orders[index].products[i].name),
+                        SizedBox(
+                          width: 150,
+                          child: Text(orders[index].products[i].name,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 16,
+
+                              )
+                          ),
+                        ),
                         Text(' x ${orders[index].products[i].quantity}'),
                         const Spacer(),
+
                         Text('${orders[index].products[i].price * orders[index].products[i].quantity} руб.')
                       ],
                     ),
