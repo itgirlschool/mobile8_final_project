@@ -24,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         currentIndex: currentIndex,
+        //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
         onTap: (value) {
           // Respond to item press.
           setState(() => currentIndex = value);

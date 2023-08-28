@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 
 import '../data/model/order_model.dart';
 import '../data/model/product_model.dart';
@@ -46,7 +47,7 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
       products: [
         Product(
           id: "1",
-          name: 'Молоко Parmalat',
+          name: 'Молоко Parmalat ffffffffff fffff fff',
           price: 100,
           quantity: 1,
           description: '1л',
@@ -96,110 +97,24 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).colorScheme.inversePrimary,
+      color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: const Text('Заказы'),
+          appBar: const AppBarWidget(
+            title: 'История заказов',
           ),
           body: Center(
             child: Container(
-              color: Colors.grey[300],
+               color: Colors.grey[200],
+
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: orders.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            color: Colors.white,
-                            child: ListTile(
-                              title: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        DateFormat('dd.MM.yyyy HH:m').format(orders[index].date),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        "${orders[index].totalPrice.toString()} руб.",
-                                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    orders[index].status,
-                                    style: const TextStyle(color: Colors.green, fontSize: 14),
-                                  )
-                                ],
-                              ),
-                              subtitle: Padding(
-                                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                                child: SizedBox(
-                                  width: 300,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: orders[index].products.length,
-                                    itemBuilder: (context, i) {
-                                      return Padding(
-                                        padding: const EdgeInsets.only(bottom: 8.0),
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                              margin: const EdgeInsets.only(right: 15),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: Colors.white,
-                                                  width: 3,
-                                                ),
-                                                borderRadius: BorderRadius.circular(10),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.grey.withOpacity(0.1),
-                                                    spreadRadius: 2,
-                                                    blurRadius: 2,
-                                                    offset: const Offset(0, 3), // changes position of shadow
-                                                  ),
-                                                ],
-                                              ),
-                                              child: Image.network(orders[index].products[i].image, width: 50, height: 50),
-                                            ),
-                                            Text(orders[index].products[i].name),
-                                            Text(' x ${orders[index].products[i].quantity}'),
-                                            Spacer(),
-                                            Text('${orders[index].products[i].price * orders[index].products[i].quantity} руб.')
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                      child: _buildOrdersList(),
                     ),
-                    // Spacer(),
-                    // ElevatedButton(
-                    //   onPressed: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(builder: (context) => const OrderScreen()),
-                    //     );
-                    //   },
-                    //   child: const Text('Экран заказа'),
-                    // ),
-                    // Spacer(),
                   ],
                 ),
               ),
@@ -208,5 +123,102 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildOrdersList() {
+    return ListView.builder(
+      itemCount: orders.length,
+      itemBuilder: (context, index) {
+        return Card(
+          color: Colors.white,
+          child: ListTile(
+            title: _buildOrderHeader(index),
+            subtitle: _buildProductsList(index),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildProductsList(int index) {
+    return Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: SizedBox(
+              width: 300,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: orders[index].products.length,
+                itemBuilder: (context, i) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 15),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.white,
+                              width: 3,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.1),
+                                spreadRadius: 2,
+                                blurRadius: 2,
+                                offset: const Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Image.network(orders[index].products[i].image, width: 50, height: 50),
+                        ),
+                        SizedBox(
+                          width: 150,
+                          child: Text(orders[index].products[i].name,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 16,
+
+                              )
+                          ),
+                        ),
+                        Text(' x ${orders[index].products[i].quantity}'),
+                        const Spacer(),
+
+                        Text('${orders[index].products[i].price * orders[index].products[i].quantity} руб.')
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+  }
+
+  Widget _buildOrderHeader(int index) {
+    return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    DateFormat('dd.MM.yyyy HH:m').format(orders[index].date),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    "${orders[index].totalPrice.toString()} руб.",
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+              Text(
+                orders[index].status,
+                style: const TextStyle(color: Colors.green, fontSize: 14),
+              )
+            ],
+          );
   }
 }

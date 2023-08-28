@@ -42,6 +42,7 @@ dependencies:
   flutter_stripe: ^9.3.0
   http: ^1.1.0
   intl: ^0.18.1
+  bottom_drawer: ^0.0.5
 
 dev_dependencies:
   flutter_test:

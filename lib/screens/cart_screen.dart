@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile8_final_project/screens/profile_screen.dart';
-import 'package:mobile8_final_project/screens/support_screen.dart';
-
-import 'login_screen.dart';
-import 'orders_history_screen.dart';
+import 'package:mobile8_final_project/screens/widgets/appbar.dart';
+import 'package:mobile8_final_project/screens/widgets/drawer.dart';
+import '../data/model/cart_model.dart';
+import '../data/model/product_model.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -13,71 +12,244 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  Cart cart = Cart(
+    products: [
+      Product(
+        id: "1",
+        name: 'Молоко Parmalat',
+        price: 100,
+        quantity: 1,
+        description: '1л',
+        category: 'Молочные продукты',
+        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+      ),
+      Product(
+        id: "2",
+        name: 'Хлеб бородинский dddddd ddfffffffffffffff',
+        price: 50,
+        quantity: 2,
+        description: 'Белый',
+        category: 'Хлебобулочные изделия',
+        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+      ),
+      Product(
+        id: "1",
+        name: 'Молоко Parmalat',
+        price: 100,
+        quantity: 1,
+        description: '1л',
+        category: 'Молочные продукты',
+        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+      ),
+      Product(
+        id: "2",
+        name: 'Хлеб бородинский dddddd dd',
+        price: 50,
+        quantity: 2,
+        description: 'Белый',
+        category: 'Хлебобулочные изделия',
+        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+      ),
+      Product(
+        id: "1",
+        name: 'Молоко Parmalat',
+        price: 100,
+        quantity: 1,
+        description: '1л',
+        category: 'Молочные продукты',
+        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+      ),
+      Product(
+        id: "2",
+        name: 'Хлеб бородинский dddddd ddffffff',
+        price: 50,
+        quantity: 2,
+        description: 'Белый',
+        category: 'Хлебобулочные изделия',
+        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+      ),
+      Product(
+        id: "1",
+        name: 'Молоко Parmalat',
+        price: 100,
+        quantity: 1,
+        description: '1л',
+        category: 'Молочные продукты',
+        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+      ),
+      Product(
+        id: "2",
+        name: 'Хлеб бородинский dddddd dd',
+        price: 50,
+        quantity: 2,
+        description: 'Белый',
+        category: 'Хлебобулочные изделия',
+        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+      ),
+    ],
+    totalPrice: 150,
+  );
+  final String _address = 'Ленинского комсомола 1А, кв. 10';
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).colorScheme.inversePrimary,
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            title: const Text('Корзина'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: const AppBarWidget(title: 'Корзина'),
+        drawer: const DrawerWidget(),
+        body: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
           ),
-          drawer: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.close),
-                    )
-                  ],
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                margin: const EdgeInsets.only(bottom: 10, left: 15, right: 15),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                ListTile(
-                  title: const Text('Профиль'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                child: Text(
+                  _address,
+                  style: const TextStyle(fontSize: 14),
+                ),
+              ),
+              Expanded(
+                flex: 11,
+                child: ListView.builder(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  itemCount: cart.products.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        _buildProductTile(index),
+                        const Divider(
+                          height: 3,
+                        ),
+                      ],
                     );
                   },
                 ),
-                ListTile(
-                  title: const Text('Заказы'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const OrdersHistoryScreen()),
-                    );
-                  },
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: SizedBox(
+                    height: 50,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 2,
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.orange,
+                      ),
+                      onPressed: () {},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Оформить заказ',
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          Text(
+                            '${cart.totalPrice} руб.',
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-                ListTile(
-                  title: const Text('Поддержка'),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SupportScreen()),
-                    );
-                  },
-                ),
-                ListTile(title: const Text('Выйти'), onTap: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
-                }),
-              ],
-            ),
-          ),
-          body: const Center(
-            child: Text(
-              'Корзина',
-            ),
+              ),
+              const SizedBox(
+                height: 8,
+              )
+            ],
           ),
         ),
       ),
     );
   }
+
+  ListTile _buildProductTile(int index) {
+    return ListTile(
+      contentPadding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+      leading: Image.network(cart.products[index].image),
+      trailing: _buildButtons(index),
+      title: Text(
+        cart.products[index].name,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 150,
+            child: Text(
+              cart.products[index].description,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Text('${cart.products[index].price} руб.'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtons(int index) {
+    return SizedBox(
+      width: 100,
+      child: Wrap(
+        alignment: WrapAlignment.end,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          SizedBox(
+            width: 35,
+            height: 30,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 20,
+              onPressed: () {
+                setState(() {
+                  // cart.products[index].quantity++;
+                  // cart.totalPrice += cart.products[index].price;
+                });
+              },
+              icon: const Icon(
+                Icons.remove_circle,
+                color: Colors.green,
+              ),
+            ),
+          ),
+          Text(
+            '${cart.products[index].quantity}',
+            style: const TextStyle(fontSize: 16),
+          ),
+          SizedBox(
+            width: 35,
+            height: 30,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              iconSize: 20,
+              onPressed: () {
+                setState(() {
+                  // cart.products[index].quantity--;
+                  // cart.totalPrice -= cart.products[index].price;
+                });
+              },
+              icon: const Icon(Icons.add_circle, color: Colors.green),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
