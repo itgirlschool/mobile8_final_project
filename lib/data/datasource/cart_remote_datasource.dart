@@ -202,14 +202,14 @@ class CartRemoteDatasource {
     Map<String, int> productsInStock = {};
     try {
       if(cart.products.isEmpty) return productsInStock;
-      List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
+      //List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
       CollectionReference productsCollection = firestore.collection('products');
-
-      QuerySnapshot querySnapshot = await productsCollection.where(FieldPath.documentId, whereIn: documentIds).get();
-      List<DocumentSnapshot> documents = querySnapshot.docs;
-      for (var document in documents) {
-        var data = document.data() as Map<String, dynamic>;
-        productsInStock[document.id] = data['quantity'];
+      for (var item in cart.products.entries) {
+        DocumentSnapshot documentSnapshot = await productsCollection.doc(item.key).get();
+        if(documentSnapshot.exists) {
+          var data = documentSnapshot.data() as Map<String, dynamic>;
+          productsInStock[item.key] = data['quantity'];
+        }
       }
       return productsInStock;
     } catch (e) {

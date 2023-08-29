@@ -5,8 +5,6 @@ import 'package:mobile8_final_project/screens/widgets/drawer.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../bloc/cart/cart_event.dart';
 import '../bloc/cart/cart_state.dart';
-import '../data/model/cart_model.dart';
-import '../data/model/product_model.dart';
 import '../main.dart';
 import '../data/repositories/cart_repository.dart';
 import '../data/repositories/user_repository.dart';
@@ -21,94 +19,95 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final _bloc = CartBloc(getIt<CartRepository>(), getIt<UserRepository>());
 
-  Cart cart = Cart(
-    products: [
-      Product(
-        id: "1",
-        name: 'Молоко Parmalat',
-        price: 100,
-        quantity: 1,
-        description: '1л',
-        category: '1',
-        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-      ),
-      Product(
-        id: "2",
-        name: 'Хлеб бородинский ',
-        price: 50,
-        quantity: 1,
-        description: 'Белый',
-        category: '3',
-        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-      ),
-      Product(
-        id: "1",
-        name: 'Молоко Parmalat',
-        price: 100,
-        quantity: 1,
-        description: '1л',
-        category: '1',
-        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-      ),
-      Product(
-        id: "2",
-        name: 'Хлеб бородинский ',
-        price: 50,
-        quantity: 1,
-        description: 'Белый',
-        category: '3',
-        image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-      ),
-    ],
-    totalPrice: 150,
-  );
+//раскомментить для тестовых данных
+  // Cart cart = Cart(
+  //   products: [
+  //     Product(
+  //       id: "1",
+  //       name: 'Молоко Parmalat',
+  //       price: 100,
+  //       quantity: 1,
+  //       description: '1л',
+  //       category: '1',
+  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+  //     ),
+  //     Product(
+  //       id: "2",
+  //       name: 'Хлеб бородинский ',
+  //       price: 50,
+  //       quantity: 1,
+  //       description: 'Белый',
+  //       category: '3',
+  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+  //     ),
+  //     Product(
+  //       id: "1",
+  //       name: 'Молоко Parmalat',
+  //       price: 100,
+  //       quantity: 1,
+  //       description: '1л',
+  //       category: '1',
+  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+  //     ),
+  //     Product(
+  //       id: "2",
+  //       name: 'Хлеб бородинский ',
+  //       price: 50,
+  //       quantity: 1,
+  //       description: 'Белый',
+  //       category: '3',
+  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+  //     ),
+  //   ],
+  //   totalPrice: 150,
+  // );
 
-  List<Product> products = [
-    Product(
-      id: "1",
-      name: 'Молоко Parmalat',
-      price: 100,
-      quantity: 1,
-      description: '1л',
-      category: '1',
-      image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-    ),
-    Product(
-      id: "2",
-      name: 'Хлеб бородинский ',
-      price: 50,
-      quantity: 1,
-      description: 'Черный, 400гр, Зерновой край',
-      category: '3',
-      image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-    ),
-  ];
-
-  List categories = [
-    {
-      "name": "Молочные продукты",
-      "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmilk.png?alt=media&token=0c8081f0-ef0a-4b25-965e-3379a1d1e523",
-      "category": "1",
-    },
-    {
-      "name": "Мясо",
-      "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-      "category": "1",
-    },
-    {
-      "name": "Хлеб",
-      "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fbread.png?alt=media&token=35d8ddfc-7652-4fdb-af23-e840827b997a",
-      "category": "1",
-    },
-  ];
-
-  final String _address = 'Ленинского комсомола 1А, кв. 10';
+  // List<Product> products = [
+  //   Product(
+  //     id: "7feHotmB2nnrRB8KOvXB",
+  //     name: 'Молоко Parmalat',
+  //     price: 100,
+  //     quantity: 1,
+  //     description: '1л',
+  //     category: '1',
+  //     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+  //   ),
+  //   Product(
+  //     id: "pflljuRHtgBBMK2jEnPI",
+  //     name: 'Хлеб бородинский ',
+  //     price: 50,
+  //     quantity: 1,
+  //     description: 'Черный, 400гр, Зерновой край',
+  //     category: '3',
+  //     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+  //   ),
+  // ];
+  //
+  // List categories = [
+  //   {
+  //     "name": "Молочные продукты",
+  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmilk.png?alt=media&token=0c8081f0-ef0a-4b25-965e-3379a1d1e523",
+  //     "category": "1",
+  //   },
+  //   {
+  //     "name": "Мясо",
+  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+  //     "category": "1",
+  //   },
+  //   {
+  //     "name": "Хлеб",
+  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fbread.png?alt=media&token=35d8ddfc-7652-4fdb-af23-e840827b997a",
+  //     "category": "1",
+  //   },
+  // ];
+  //
+  // final String _address = 'Ленинского комсомола 1А, кв. 10';
 
   @override
   void initState() {
     //раскомментить для тестовых данных
     //final CartRepository _cartRepository = getIt<CartRepository>();
-   // _cartRepository.addProductToCart(products[0]);
+    //_cartRepository.addProductToCart(products[0]);
     //_cartRepository.addProductToCart(products[1]);
     super.initState();
   }
