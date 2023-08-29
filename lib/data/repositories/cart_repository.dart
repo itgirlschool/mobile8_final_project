@@ -65,4 +65,51 @@ class CartRepository {
       rethrow;
     }
   }
+
+  Stream<Cart> getCartStream() {
+    try {
+      return _cartRemoteDatasource.getCartStream().map((cartDto) => Cart(
+        products: [
+          for (var item in cartDto.products.entries)
+            Product(
+              id: item.key,
+              name: item.value['name'] as String,
+              price: item.value['price'] as int,
+              quantity: item.value['quantity'] as int,
+              image: item.value['image'] as String,
+              category: item.value['category'] as String,
+              description: item.value['description'] as String,
+            ),
+        ],
+        totalPrice: cartDto.totalPrice,
+      ));
+    } catch (e) {
+      print('Ошибка при получении корзины: $e');
+      rethrow;
+    }
+  }
+
+  Future<Map<String, int>> getProductsInStock(Cart cart) {
+    try {
+      return _cartRemoteDatasource.getProductsInStock(
+        CartDto(
+          products: {
+            for (var product in cart.products)
+              product.id: {
+                'name': product.name,
+                'price': product.price,
+                'quantity': product.quantity,
+                'image': product.image,
+                'category': product.category,
+                'description': product.description,
+              },
+          },
+          totalPrice: cart.totalPrice,
+        ),
+      );
+    } catch (e) {
+      print('Ошибка при получении товаров в наличии: $e');
+      rethrow;
+    }
+  }
 }

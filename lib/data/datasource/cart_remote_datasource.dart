@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,8 +10,10 @@ class CartRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> addProductToCart(ProductDto productDto) async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
+    //User user = FirebaseAuth.instance.currentUser!;
+    //String userId = user.uid;
+    String userId = '4';
+
     var product = productDto.toMap();
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -81,8 +85,9 @@ class CartRemoteDatasource {
   }
 
   Future<void> removeProductFromCart(String productId) async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
+    //User user = FirebaseAuth.instance.currentUser!;
+    //String userId = user.uid;
+    String userId = '4';
 
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -145,8 +150,10 @@ class CartRemoteDatasource {
   }
 
   Future<CartDto> getCart() async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
+    //User user = FirebaseAuth.instance.currentUser!;
+    //String userId = user.uid;
+
+    String userId = '4';
 
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -162,11 +169,36 @@ class CartRemoteDatasource {
     }
   }
 
-  Future<Map<String, String>> getProductsInStock(CartDto cart) async {
+  Stream<CartDto> getCartStream() {
+    try {
+      //User user = FirebaseAuth.instance.currentUser!;
+      //String userId = user.uid;
+
+      String userId = '4';
+
+      DocumentReference cartReference = FirebaseFirestore.instance.collection('carts').doc(userId);
+
+      Stream<DocumentSnapshot> stream = cartReference.snapshots();
+
+      return stream.map((snapshot) {
+        if (snapshot.exists) {
+          var cart = snapshot.data() as Map<String, dynamic>;
+          return CartDto.fromMap(cart);
+        } else {
+          throw Exception('empty cart');
+        }
+      });
+    } catch (e) {
+      return const Stream.empty();
+    }
+  }
+
+
+  Future<Map<String, int>> getProductsInStock(CartDto cart) async {
     User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
     List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
-    Map<String, String> productsInStock = {};
+    Map<String, int> productsInStock = {};
     try {
       CollectionReference productsCollection = firestore.collection('products');
 
@@ -174,11 +206,11 @@ class CartRemoteDatasource {
       List<DocumentSnapshot> documents = querySnapshot.docs;
       for (var document in documents) {
         var data = document.data() as Map<String, dynamic>;
-        productsInStock[document.id] = data['quantity'].toString();
+        productsInStock[document.id] = data['quantity'];
       }
       return productsInStock;
     } catch (e) {
-      throw Exception('getCart error');
+      throw Exception('Ошибка получения товаров в наличии: $e');
     }
   }
 }
