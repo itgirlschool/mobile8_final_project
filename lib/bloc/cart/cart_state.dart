@@ -1,5 +1,7 @@
 import '../../data/model/cart_model.dart';
 
+//Родительский класс для состояний экрана
+//sealed class позволяет нам ограничить набор возможных состояний, как enum
 sealed class CartState {
   const CartState();
 }
@@ -26,4 +28,5 @@ class LoadedCartState extends CartState {
   int get hashCode => cart.hashCode;
 }
 
+// Состояние экрана с ошибкой
 class ErrorCartState extends CartState {}

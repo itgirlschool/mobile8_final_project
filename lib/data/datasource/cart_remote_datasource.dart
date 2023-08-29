@@ -10,6 +10,7 @@ class CartRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> addProductToCart(ProductDto productDto) async {
+    //TODO раскомментить, когда не нужны будут тестовые данные
     //User user = FirebaseAuth.instance.currentUser!;
     //String userId = user.uid;
     String userId = '4';
@@ -85,6 +86,7 @@ class CartRemoteDatasource {
   }
 
   Future<void> removeProductFromCart(String productId) async {
+    //TODO раскомментить, когда не нужны будут тестовые данные
     //User user = FirebaseAuth.instance.currentUser!;
     //String userId = user.uid;
     String userId = '4';
@@ -150,6 +152,7 @@ class CartRemoteDatasource {
   }
 
   Future<CartDto> getCart() async {
+    //TODO раскомментить, когда не нужны будут тестовые данные
     //User user = FirebaseAuth.instance.currentUser!;
     //String userId = user.uid;
 
@@ -171,6 +174,7 @@ class CartRemoteDatasource {
 
   Stream<CartDto> getCartStream() {
     try {
+      //TODO раскомментить, когда не нужны будут тестовые данные
       //User user = FirebaseAuth.instance.currentUser!;
       //String userId = user.uid;
 
@@ -195,11 +199,10 @@ class CartRemoteDatasource {
 
 
   Future<Map<String, int>> getProductsInStock(CartDto cart) async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
-    List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
     Map<String, int> productsInStock = {};
     try {
+      if(cart.products.isEmpty) return productsInStock;
+      List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
       CollectionReference productsCollection = firestore.collection('products');
 
       QuerySnapshot querySnapshot = await productsCollection.where(FieldPath.documentId, whereIn: documentIds).get();

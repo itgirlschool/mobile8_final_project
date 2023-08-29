@@ -105,6 +105,15 @@ class _CartScreenState extends State<CartScreen> {
   final String _address = 'Ленинского комсомола 1А, кв. 10';
 
   @override
+  void initState() {
+    //раскомментить для тестовых данных
+    //final CartRepository _cartRepository = getIt<CartRepository>();
+   // _cartRepository.addProductToCart(products[0]);
+    //_cartRepository.addProductToCart(products[1]);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -122,7 +131,31 @@ class _CartScreenState extends State<CartScreen> {
                 LoadingCartState() => const Center(
                     child: CircularProgressIndicator(),
                   ),
-                LoadedCartState() => _buildCart(context, state),
+                LoadedCartState() => (state.cart.products.isNotEmpty)
+                    ? _buildCart(context, state)
+                    : Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.orange[100]!,
+                                Colors.orange[200]!,
+                                Colors.orange[300]!,
+                                Colors.orange[400]!,
+                                Colors.orange[500]!,
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text(
+                            'Корзина пуста',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ),
                 ErrorCartState() => const Center(
                     child: Text('Ошибка при загрузке корзины'),
                   ),
@@ -153,7 +186,7 @@ class _CartScreenState extends State<CartScreen> {
           Expanded(
             flex: 11,
             child: ListView.builder(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
               itemCount: state.cart.products.length,
               itemBuilder: (context, index) {
                 return Column(
@@ -239,55 +272,56 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _buildButtons(int index, LoadedCartState state) {
-    return Builder(
-      builder: (context) {
-        return SizedBox(
-          width: 100,
-          child: Wrap(
-            alignment: WrapAlignment.end,
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              SizedBox(
-                width: 35,
-                height: 30,
-                child: IconButton(
+    return Builder(builder: (context) {
+      return SizedBox(
+        width: 100,
+        child: Wrap(
+          alignment: WrapAlignment.end,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            SizedBox(
+              width: 35,
+              height: 30,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                iconSize: 20,
+                onPressed: () {
+                  context.read<CartBloc>().add(
+                        RemoveProductFromCart(product: state.cart.products[index]),
+                      );
+                },
+                icon: const Icon(
+                  Icons.remove_circle,
+                  color: Colors.green,
+                ),
+              ),
+            ),
+            Text(
+              '${state.cart.products[index].quantity}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            SizedBox(
+              width: 35,
+              height: 30,
+              child: IconButton(
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                   iconSize: 20,
                   onPressed: () {
-                    context.read<CartBloc>().add(
-                          RemoveProductFromCart(product: state.cart.products[index]),
-                        );
+                    if (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)) {
+                      context.read<CartBloc>().add(
+                            AddProductToCart(product: state.cart.products[index]),
+                          );
+                    }
                   },
-                  icon: const Icon(
-                    Icons.remove_circle,
-                    color: Colors.green,
-                  ),
-                ),
-              ),
-              Text(
-                '${state.cart.products[index].quantity}',
-                style: const TextStyle(fontSize: 16),
-              ),
-              SizedBox(
-                width: 35,
-                height: 30,
-                child: IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  iconSize: 20,
-                  onPressed: () {
-                    context.read<CartBloc>().add(
-                          AddProductToCart(product: state.cart.products[index]),
-                        );
-                  },
-                  icon: const Icon(Icons.add_circle, color: Colors.green),
-                ),
-              ),
-            ],
-          ),
-        );
-      }
-    );
+                  icon: (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity))
+                      ? const Icon(Icons.add_circle, color: Colors.green)
+                      : const Icon(Icons.add_circle, color: Colors.grey)),
+            ),
+          ],
+        ),
+      );
+    });
   }
 }

@@ -84,7 +84,6 @@ class CartRepository {
         totalPrice: cartDto.totalPrice,
       ));
     } catch (e) {
-      print('Ошибка при получении корзины: $e');
       rethrow;
     }
   }

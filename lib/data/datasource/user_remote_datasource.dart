@@ -82,19 +82,23 @@ class UserRemoteDatasource {
   }
 
   Future<UserDto> getUser() async {
-    User user = FirebaseAuth.instance.currentUser!;
-    //var userId = '4';
+    //TODO раскомментить, когда не нужны будут тестовые данные
+   // User user = FirebaseAuth.instance.currentUser!;
+    var userId = '4';
     try {
-      DocumentReference profileReference = firestore.collection('profiles').doc(user.uid);
+      //DocumentReference profileReference = firestore.collection('profiles').doc(user.uid);
+      DocumentReference profileReference = firestore.collection('profiles').doc(userId);
       DocumentSnapshot profileSnapshot = await profileReference.get();
       if (!profileSnapshot.exists) {
         throw Exception('Пользователь не найден');
       } else {
         var profile = profileSnapshot.data() as Map<String, dynamic>;
         return UserDto(
-          id: user.uid,
+         // id: user.uid,
+          id: userId,
           name: profile['name'],
-          email: user.email!,
+          email: "email",
+         // email: user.email!,
           phone: profile['phone'],
           address: profile['address'],
         );
