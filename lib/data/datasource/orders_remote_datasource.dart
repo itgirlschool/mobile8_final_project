@@ -36,6 +36,7 @@ class OrdersRemoteDatasource {
   Future<List<OrderDto>> getOrders() async {
     // User user = FirebaseAuth.instance.currentUser!;
     // String userId = user.uid;
+    //TODO раскомментить, когда не нужны будут тестовые данные
     String userId = '4';
     try {
       CollectionReference ordersCollection = firestore.collection('orders');

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -7,10 +9,12 @@ import '../dto/product_dto.dart';
 class CartRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-
   Future<void> addProductToCart(ProductDto productDto) async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
+    //TODO раскомментить, когда не нужны будут тестовые данные
+    //User user = FirebaseAuth.instance.currentUser!;
+    //String userId = user.uid;
+    String userId = '4';
+
     var product = productDto.toMap();
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -49,7 +53,7 @@ class CartRemoteDatasource {
           newCart['products'][product['id']] = {
             'name': product['name'],
             'price': product['price'],
-            'quantity': product['quantity'],
+            'quantity': 1,
             'image': product['image'],
             'category': product['category'],
             'description': product['description'],
@@ -67,7 +71,7 @@ class CartRemoteDatasource {
             product['id']: {
               'name': product['name'],
               'price': product['price'],
-              'quantity': product['quantity'],
+              'quantity': 1,
               'image': product['image'],
               'category': product['category'],
               'description': product['description'],
@@ -82,8 +86,10 @@ class CartRemoteDatasource {
   }
 
   Future<void> removeProductFromCart(String productId) async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
+    //TODO раскомментить, когда не нужны будут тестовые данные
+    //User user = FirebaseAuth.instance.currentUser!;
+    //String userId = user.uid;
+    String userId = '4';
 
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -146,8 +152,11 @@ class CartRemoteDatasource {
   }
 
   Future<CartDto> getCart() async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
+    //TODO раскомментить, когда не нужны будут тестовые данные
+    //User user = FirebaseAuth.instance.currentUser!;
+    //String userId = user.uid;
+
+    String userId = '4';
 
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -163,4 +172,48 @@ class CartRemoteDatasource {
     }
   }
 
+  Stream<CartDto> getCartStream() {
+    try {
+      //TODO раскомментить, когда не нужны будут тестовые данные
+      //User user = FirebaseAuth.instance.currentUser!;
+      //String userId = user.uid;
+
+      String userId = '4';
+
+      DocumentReference cartReference = FirebaseFirestore.instance.collection('carts').doc(userId);
+
+      Stream<DocumentSnapshot> stream = cartReference.snapshots();
+
+      return stream.map((snapshot) {
+        if (snapshot.exists) {
+          var cart = snapshot.data() as Map<String, dynamic>;
+          return CartDto.fromMap(cart);
+        } else {
+          throw Exception('empty cart');
+        }
+      });
+    } catch (e) {
+      return const Stream.empty();
+    }
+  }
+
+
+  Future<Map<String, int>> getProductsInStock(CartDto cart) async {
+    Map<String, int> productsInStock = {};
+    try {
+      if(cart.products.isEmpty) return productsInStock;
+      //List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
+      CollectionReference productsCollection = firestore.collection('products');
+      for (var item in cart.products.entries) {
+        DocumentSnapshot documentSnapshot = await productsCollection.doc(item.key).get();
+        if(documentSnapshot.exists) {
+          var data = documentSnapshot.data() as Map<String, dynamic>;
+          productsInStock[item.key] = data['quantity'];
+        }
+      }
+      return productsInStock;
+    } catch (e) {
+      throw Exception('Ошибка получения товаров в наличии: $e');
+    }
+  }
 }
