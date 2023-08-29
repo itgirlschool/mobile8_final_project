@@ -7,7 +7,6 @@ import '../dto/product_dto.dart';
 class CartRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-
   Future<void> addProductToCart(ProductDto productDto) async {
     User user = FirebaseAuth.instance.currentUser!;
     String userId = user.uid;
@@ -49,7 +48,7 @@ class CartRemoteDatasource {
           newCart['products'][product['id']] = {
             'name': product['name'],
             'price': product['price'],
-            'quantity': product['quantity'],
+            'quantity': 1,
             'image': product['image'],
             'category': product['category'],
             'description': product['description'],
@@ -67,7 +66,7 @@ class CartRemoteDatasource {
             product['id']: {
               'name': product['name'],
               'price': product['price'],
-              'quantity': product['quantity'],
+              'quantity': 1,
               'image': product['image'],
               'category': product['category'],
               'description': product['description'],
@@ -163,4 +162,23 @@ class CartRemoteDatasource {
     }
   }
 
+  Future<Map<String, String>> getProductsInStock(CartDto cart) async {
+    User user = FirebaseAuth.instance.currentUser!;
+    String userId = user.uid;
+    List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
+    Map<String, String> productsInStock = {};
+    try {
+      CollectionReference productsCollection = firestore.collection('products');
+
+      QuerySnapshot querySnapshot = await productsCollection.where(FieldPath.documentId, whereIn: documentIds).get();
+      List<DocumentSnapshot> documents = querySnapshot.docs;
+      for (var document in documents) {
+        var data = document.data() as Map<String, dynamic>;
+        productsInStock[document.id] = data['quantity'].toString();
+      }
+      return productsInStock;
+    } catch (e) {
+      throw Exception('getCart error');
+    }
+  }
 }
