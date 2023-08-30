@@ -15,9 +15,8 @@ class PaymentRemoteDatasource {
           ),
           body: {
             'email': paymentDto.email,
-            'amount': paymentDto.price.toString(),
+            'amount': (paymentDto.price * 100).toString(),
           });
-
       final jsonResponse = jsonDecode(response.body);
       Stripe.instance.resetPaymentSheetCustomer();
       //2. initialize the payment sheet
@@ -34,11 +33,6 @@ class PaymentRemoteDatasource {
       return 'success';
     } catch (e) {
       return e.toString();
-      // if (e is StripeException) {
-      //   throw 'Ошибка Stripe: ${e.error.localizedMessage}';
-      // } else {
-      //   throw 'Ошибка: ${e.toString()}';
-      // }
     }
   }
 }

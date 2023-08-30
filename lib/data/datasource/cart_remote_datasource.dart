@@ -137,8 +137,11 @@ class CartRemoteDatasource {
   }
 
   Future<void> clearCart() async {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
+    //TODO раскомментить, когда не нужны будут тестовые данные
+    //User user = FirebaseAuth.instance.currentUser!;
+    //String userId = user.uid;
+
+    String userId = '4';
 
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -165,10 +168,10 @@ class CartRemoteDatasource {
         var cart = cartSnapshot.data() as Map<String, dynamic>;
         return CartDto.fromMap(cart);
       } else {
-        throw Exception('empty cart');
+        return CartDto(products: {}, totalPrice: 0);
       }
     } catch (e) {
-      throw Exception('getCart error');
+      throw Exception('getCart error datasource');
     }
   }
 
@@ -189,7 +192,7 @@ class CartRemoteDatasource {
           var cart = snapshot.data() as Map<String, dynamic>;
           return CartDto.fromMap(cart);
         } else {
-          throw Exception('empty cart');
+          return CartDto(products: {}, totalPrice: 0);
         }
       });
     } catch (e) {
@@ -202,7 +205,6 @@ class CartRemoteDatasource {
     Map<String, int> productsInStock = {};
     try {
       if(productIds.isEmpty) return productsInStock;
-      //List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
       CollectionReference productsCollection = firestore.collection('products');
       for (var item in productIds) {
         DocumentSnapshot documentSnapshot = await productsCollection.doc(item).get();

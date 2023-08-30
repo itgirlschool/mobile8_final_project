@@ -97,7 +97,7 @@ class UserRemoteDatasource {
          // id: user.uid,
           id: userId,
           name: profile['name'],
-          email: "email",
+          email: "email@e.com",
          // email: user.email!,
           phone: profile['phone'],
           address: profile['address'],

@@ -5,6 +5,9 @@ import 'package:mobile8_final_project/screens/widgets/drawer.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../bloc/cart/cart_event.dart';
 import '../bloc/cart/cart_state.dart';
+import '../data/model/product_model.dart';
+import '../data/repositories/orders_repository.dart';
+import '../data/repositories/payment_repository.dart';
 import '../main.dart';
 import '../data/repositories/cart_repository.dart';
 import '../data/repositories/user_repository.dart';
@@ -17,7 +20,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final _bloc = CartBloc(getIt<CartRepository>(), getIt<UserRepository>());
+  final _bloc = CartBloc(getIt<CartRepository>(), getIt<UserRepository>(), getIt<PaymentRepository>(), getIt<OrdersRepository>());
 
 //раскомментить для тестовых данных
   // Cart cart = Cart(
@@ -62,27 +65,27 @@ class _CartScreenState extends State<CartScreen> {
   //   totalPrice: 150,
   // );
 
-  // List<Product> products = [
-  //   Product(
-  //     id: "7feHotmB2nnrRB8KOvXB",
-  //     name: 'Молоко Parmalat',
-  //     price: 100,
-  //     quantity: 1,
-  //     description: '1л',
-  //     category: '1',
-  //     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  //   ),
-  //   Product(
-  //     id: "pflljuRHtgBBMK2jEnPI",
-  //     name: 'Хлеб бородинский ',
-  //     price: 50,
-  //     quantity: 1,
-  //     description: 'Черный, 400гр, Зерновой край',
-  //     category: '3',
-  //     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  //   ),
-  // ];
-  //
+  List<Product> products = [
+    Product(
+      id: "7feHotmB2nnrRB8KOvXB",
+      name: 'Молоко Parmalat',
+      price: 100,
+      quantity: 1,
+      description: '1л',
+      category: '1',
+      image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+    ),
+    Product(
+      id: "pflljuRHtgBBMK2jEnPI",
+      name: 'Хлеб бородинский ',
+      price: 50,
+      quantity: 1,
+      description: 'Черный, 400гр, Зерновой край',
+      category: '3',
+      image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+    ),
+  ];
+
   // List categories = [
   //   {
   //     "name": "Молочные продукты",
@@ -106,9 +109,9 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     //раскомментить для тестовых данных
-    //final CartRepository _cartRepository = getIt<CartRepository>();
+    final CartRepository _cartRepository = getIt<CartRepository>();
     //_cartRepository.addProductToCart(products[0]);
-    //_cartRepository.addProductToCart(products[1]);
+   // _cartRepository.addProductToCart(products[1]);
     super.initState();
   }
 
@@ -125,41 +128,58 @@ class _CartScreenState extends State<CartScreen> {
           ),
           child: BlocProvider(
             create: (_) => _bloc,
-            child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-              return switch (state) {
-                LoadingCartState() => const Center(
-                    child: CircularProgressIndicator(),
+            child: BlocListener<CartBloc, CartState>(
+              listenWhen: (previous, current) {
+                if (previous is LoadedCartState && current is PaymentErrorCartState) {
+                  return true;
+                }
+                return false;
+              },
+              listener: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Оплата не прошла'),
+                    backgroundColor: Colors.red,
                   ),
-                LoadedCartState() => (state.cart.products.isNotEmpty)
-                    ? _buildCart(context, state)
-                    : Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.orange[100]!,
-                                Colors.orange[200]!,
-                                Colors.orange[300]!,
-                                Colors.orange[400]!,
-                                Colors.orange[500]!,
-                              ],
+                );
+              },
+              child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+                return switch (state) {
+                  LoadingCartState() => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  LoadedCartState() => (state.cart.products.isNotEmpty)
+                      ? _buildCart(context, state)
+                      : Center(
+                          child: Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  Colors.orange[100]!,
+                                  Colors.orange[200]!,
+                                  Colors.orange[300]!,
+                                  Colors.orange[400]!,
+                                  Colors.orange[500]!,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Text(
-                            'Корзина пуста',
-                            style: TextStyle(fontSize: 16),
+                            child: const Text(
+                              'Корзина пуста',
+                              style: TextStyle(fontSize: 16),
+                            ),
                           ),
                         ),
-                      ),
-                ErrorCartState() => const Center(
-                    child: Text('Ошибка при загрузке корзины'),
-                  ),
-              };
-            }),
+                  ErrorCartState() => const Center(
+                      child: Text('Ошибка при загрузке корзины'),
+                    ),
+                  PaymentErrorCartState() => _buildPaymentError(context),
+                };
+              }),
+            ),
           ),
         ),
       ),
@@ -185,7 +205,7 @@ class _CartScreenState extends State<CartScreen> {
           Expanded(
             flex: 11,
             child: ListView.builder(
-              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10),
+              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
               itemCount: state.cart.products.length,
               itemBuilder: (context, index) {
                 return Column(
@@ -211,7 +231,11 @@ class _CartScreenState extends State<CartScreen> {
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.orange,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<CartBloc>().add(
+                          PayEvent(totalPrice: state.cart.totalPrice),
+                        );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -242,9 +266,15 @@ class _CartScreenState extends State<CartScreen> {
 
   ListTile _buildProductTile(int index, LoadedCartState state) {
     return ListTile(
-      contentPadding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 0),
+      contentPadding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
       leading: Image.network(
         state.cart.products[index].image,
+        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+          if (loadingProgress == null) {
+            return child;
+          }
+          return const Icon(Icons.image);
+        },
         errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
           return const Icon(Icons.image_not_supported);
         },
@@ -258,9 +288,10 @@ class _CartScreenState extends State<CartScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 150,
+            width: double.infinity,
             child: Text(
               state.cart.products[index].description,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -322,5 +353,14 @@ class _CartScreenState extends State<CartScreen> {
         ),
       );
     });
+  }
+
+  Widget _buildPaymentError(BuildContext context) {
+    context.read<CartBloc>().add(
+          (LoadCartEvent()),
+        );
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
   }
 }

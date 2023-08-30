@@ -9,9 +9,10 @@ class OrdersRemoteDatasource {
 
 
   Future<void> addOrder() {
-    User user = FirebaseAuth.instance.currentUser!;
-    String userId = user.uid;
-    //String userId = '4';
+    //TODO раскомментить, когда не нужны будут тестовые данные
+    //User user = FirebaseAuth.instance.currentUser!;
+    //String userId = user.uid;
+    String userId = '4';
     CartRemoteDatasource cartRemoteDatasource = CartRemoteDatasource();
 
     return cartRemoteDatasource.getCart().then((cart) async {
@@ -26,7 +27,7 @@ class OrdersRemoteDatasource {
               order,
             );
         //TODO: раскомментить, когда не нужны будут тестовые данные корзины
-        //await cartRemoteDatasource.clearCart();
+        await cartRemoteDatasource.clearCart();
       } catch (e) {
         print('Ошибка при добавлении заказа: $e');
       }

@@ -37,3 +37,17 @@ class RemoveProductFromCart extends CartEvent {
   @override
   int get hashCode => product.hashCode;
 }
+
+class PayEvent extends CartEvent {
+  final int totalPrice;
+
+  const PayEvent({required this.totalPrice});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is PayEvent && runtimeType == other.runtimeType && totalPrice == other.totalPrice;
+
+  @override
+  int get hashCode => totalPrice.hashCode;
+}
