@@ -121,65 +121,56 @@ class _CartScreenState extends State<CartScreen> {
       child: Scaffold(
         appBar: const AppBarWidget(title: 'Корзина'),
         drawer: const DrawerWidget(),
-        body: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: BlocProvider(
-            create: (_) => _bloc,
-            child: BlocListener<CartBloc, CartState>(
-              listenWhen: (previous, current) {
-                if (previous is LoadedCartState && current is PaymentErrorCartState) {
-                  return true;
-                }
-                return false;
-              },
-              listener: (context, state) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Оплата не прошла'),
-                    backgroundColor: Colors.red,
+        body: BlocProvider(
+          create: (_) => _bloc,
+          child: BlocListener<CartBloc, CartState>(
+            listenWhen: (previous, current) {
+              if (previous is LoadedCartState && current is PaymentErrorCartState) {
+                return true;
+              }
+              return false;
+            },
+            listener: (context, state) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Оплата не прошла'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            },
+            child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+              return switch (state) {
+                LoadingCartState() => const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                );
-              },
-              child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-                return switch (state) {
-                  LoadingCartState() => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  LoadedCartState() => (state.cart.products.isNotEmpty)
-                      ? _buildCart(context, state)
-                      : Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [
-                                  Colors.orange[100]!,
-                                  Colors.orange[200]!,
-                                  Colors.orange[300]!,
-                                  Colors.orange[400]!,
-                                  Colors.orange[500]!,
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(10),
+                LoadedCartState() => (state.cart.products.isNotEmpty)
+                    ? _buildCart(context, state)
+                    : Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(25),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.orange[100]!,
+                                Colors.orange[500]!,
+                              ],
                             ),
-                            child: const Text(
-                              'Корзина пуста',
-                              style: TextStyle(fontSize: 16),
-                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Text(
+                            'Корзина пуста',
+                            style: TextStyle(fontSize: 16),
                           ),
                         ),
-                  ErrorCartState() => const Center(
-                      child: Text('Ошибка при загрузке корзины'),
-                    ),
-                  PaymentErrorCartState() => _buildPaymentError(context),
-                };
-              }),
-            ),
+                      ),
+                ErrorCartState() => const Center(
+                    child: Text('Ошибка при загрузке корзины'),
+                  ),
+                PaymentErrorCartState() => _buildPaymentError(context),
+              };
+            }),
           ),
         ),
       ),
