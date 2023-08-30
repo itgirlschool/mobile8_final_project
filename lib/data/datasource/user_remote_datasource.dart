@@ -97,7 +97,7 @@ class UserRemoteDatasource {
          // id: user.uid,
           id: userId,
           name: profile['name'],
-          email: "email",
+          email: "email@e.com",
          // email: user.email!,
           phone: profile['phone'],
           address: profile['address'],
@@ -108,4 +108,32 @@ class UserRemoteDatasource {
     }
   }
 
+  Stream<UserDto> getUserStream() {
+    //TODO раскомментить, когда не нужны будут тестовые данные
+    //User user = FirebaseAuth.instance.currentUser!;
+    var userId = '4';
+    try {
+      //DocumentReference profileReference = firestore.collection('profiles').doc(user.uid);
+      DocumentReference profileReference = firestore.collection('profiles').doc(userId);
+      Stream<DocumentSnapshot> stream = profileReference.snapshots();
+      return stream.map((profileSnapshot) {
+        if (!profileSnapshot.exists) {
+          throw Exception('Пользователь не найден');
+        } else {
+          var profile = profileSnapshot.data() as Map<String, dynamic>;
+          return UserDto(
+            //id: user.uid,
+            id: userId,
+            name: profile['name'],
+            email: "email@e.com",
+            // email: user.email!,
+            phone: profile['phone'],
+            address: profile['address'],
+          );
+        }
+      });
+    } catch (e) {
+      throw Exception('Ошибка при получении пользователя');
+    }
+  }
 }

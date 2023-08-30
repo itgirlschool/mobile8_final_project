@@ -88,23 +88,10 @@ class CartRepository {
     }
   }
 
-  Future<Map<String, int>> getProductsInStock(Cart cart) {
+  Future<Map<String, int>> getProductsInStock(List<Product> products) {
     try {
       return _cartRemoteDatasource.getProductsInStock(
-        CartDto(
-          products: {
-            for (var product in cart.products)
-              product.id: {
-                'name': product.name,
-                'price': product.price,
-                'quantity': product.quantity,
-                'image': product.image,
-                'category': product.category,
-                'description': product.description,
-              },
-          },
-          totalPrice: cart.totalPrice,
-        ),
+        products.map((e) => e.id).toList(),
       );
     } catch (e) {
       print('Ошибка при получении товаров в наличии: $e');

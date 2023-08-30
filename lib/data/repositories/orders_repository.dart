@@ -38,4 +38,12 @@ class OrdersRepository {
       rethrow;
     }
   }
+
+  Future<void> addOrder() async {
+    try {
+      await _ordersRemoteDatasource.addOrder();
+    } catch (e) {
+      print('Ошибка при добавлении заказа: $e');
+    }
+  }
 }

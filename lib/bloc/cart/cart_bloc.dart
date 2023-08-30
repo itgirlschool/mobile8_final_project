@@ -1,7 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile8_final_project/data/model/payment_model.dart';
 import 'package:mobile8_final_project/data/model/user_model.dart';
 import 'package:mobile8_final_project/data/repositories/cart_repository.dart';
 import '../../data/model/cart_model.dart';
+import '../../data/repositories/orders_repository.dart';
+import '../../data/repositories/payment_repository.dart';
 import '../../data/repositories/user_repository.dart';
 import 'cart_event.dart';
 import 'cart_state.dart';
@@ -10,15 +13,19 @@ import 'cart_state.dart';
 class CartBloc extends Bloc<CartEvent, CartState> {
   final CartRepository _cartRepository;
   final UserRepository _userRepository;
+  final PaymentRepository _paymentRepository;
+  final OrdersRepository _orderRepository;
 
   //Конструктор принимает экземпляр CartRepository и UserRepository
-  CartBloc(this._cartRepository, this._userRepository) : super(const LoadingCartState()) {
+  CartBloc(this._cartRepository, this._userRepository, this._paymentRepository, this._orderRepository) : super(const LoadingCartState()) {
     //при получении события LoadCartEvent вызывается метод _onLoadEvent
     on<LoadCartEvent>(_onLoadEvent);
     //при получении события AddProductToCart вызывается метод _onAddEvent
     on<AddProductToCart>(_onAddEvent);
     //при получении события RemoveProductFromCart вызывается метод _onRemoveEvent
     on<RemoveProductFromCart>(_onRemoveEvent);
+    //при получении события PayEvent вызывается метод _onPayEvent
+    on<PayEvent>(_onPayEvent);
     //добавляем событие LoadCartEvent
     add(LoadCartEvent());
   }
@@ -31,7 +38,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       //загружаем корзину
       Cart cart = await _cartRepository.getCart();
       //загружаем товары в наличии, чтобы проверять, можно ли добавлять товар в корзину
-      Map<String, int> stock = await _cartRepository.getProductsInStock(cart);
+      Map<String, int> stock = await _cartRepository.getProductsInStock(cart.products);
       //загружаем пользователя, чтобы получить его адрес для отображения сверху экрана
       User user = await _userRepository.getUser();
       //подписываемся на изменения корзины
@@ -39,7 +46,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         //выводим состояние с загруженной корзиной, когда получены изменившиеся данные (а также при первой загрузке)
         return LoadedCartState(cart: cart, address: user.address, stock: stock);
       }, onError: (error, stackTrace) {
-        //выводим состояние с ошибкой, если произошла ошибка
+        //выводим ошибку, если она возникла
         return ErrorCartState();
       });
     } catch (error) {
@@ -65,6 +72,23 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       await _cartRepository.removeProductFromCart(event.product.id);
     } catch (error) {
       emit(ErrorCartState());
+    }
+  }
+
+  //метод который вызывается при событии PayEvent
+  Future<void> _onPayEvent(PayEvent event, Emitter<CartState> emit) async {
+    try {
+      //получаем результат оплаты
+      var result = await _paymentRepository.pay(Payment(price: event.totalPrice));
+      if(result == 'success') {
+        //если оплата прошла успешно, то добавляем заказ и очищаем корзину
+        await _orderRepository.addOrder();
+      }
+      else {
+        emit(PaymentErrorCartState());
+      }
+    } catch (error) {
+      emit(PaymentErrorCartState());
     }
   }
 }

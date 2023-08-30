@@ -30,3 +30,5 @@ class LoadedCartState extends CartState {
 
 // Состояние экрана с ошибкой
 class ErrorCartState extends CartState {}
+
+class PaymentErrorCartState extends CartState {}
