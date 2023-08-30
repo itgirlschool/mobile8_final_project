@@ -31,7 +31,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       //загружаем корзину
       Cart cart = await _cartRepository.getCart();
       //загружаем товары в наличии, чтобы проверять, можно ли добавлять товар в корзину
-      Map<String, int> stock = await _cartRepository.getProductsInStock(cart);
+      Map<String, int> stock = await _cartRepository.getProductsInStock(cart.products);
       //загружаем пользователя, чтобы получить его адрес для отображения сверху экрана
       User user = await _userRepository.getUser();
       //подписываемся на изменения корзины

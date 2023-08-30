@@ -198,17 +198,17 @@ class CartRemoteDatasource {
   }
 
 
-  Future<Map<String, int>> getProductsInStock(CartDto cart) async {
+  Future<Map<String, int>> getProductsInStock(List<String> productIds) async {
     Map<String, int> productsInStock = {};
     try {
-      if(cart.products.isEmpty) return productsInStock;
+      if(productIds.isEmpty) return productsInStock;
       //List<String> documentIds = [for (var item in cart.products.entries) item.key.toString()];
       CollectionReference productsCollection = firestore.collection('products');
-      for (var item in cart.products.entries) {
-        DocumentSnapshot documentSnapshot = await productsCollection.doc(item.key).get();
+      for (var item in productIds) {
+        DocumentSnapshot documentSnapshot = await productsCollection.doc(item).get();
         if(documentSnapshot.exists) {
           var data = documentSnapshot.data() as Map<String, dynamic>;
-          productsInStock[item.key] = data['quantity'];
+          productsInStock[item] = data['quantity'];
         }
       }
       return productsInStock;
