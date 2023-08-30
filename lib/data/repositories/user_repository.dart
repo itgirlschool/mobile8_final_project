@@ -16,7 +16,7 @@ class UserRepository {
       return result;
     } catch (e) {
      // print('Ошибка при входе: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -34,7 +34,7 @@ class UserRepository {
       return result;
     } catch (e) {
      // print('Ошибка при регистрации: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -52,7 +52,7 @@ class UserRepository {
       return result;
     } catch (e) {
       //print('Ошибка при обновлении данных пользователя: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -61,7 +61,7 @@ class UserRepository {
       await _userRemoteDatasource.logout();
     } catch (e) {
       //print('Ошибка при выходе: $e');
-      throw e;
+      rethrow;
     }
   }
 
@@ -71,7 +71,18 @@ class UserRepository {
       return User(email: result.email, name: result.name, phone: result.phone, address: result.address, id: result.id);
     } catch (e) {
      // print('Ошибка при получении данных пользователя: $e');
-      throw e;
+      rethrow;
+    }
+  }
+
+  Stream<User> getUserStream() {
+    try {
+      return _userRemoteDatasource.getUserStream().map((event) {
+        return User(email: event.email, name: event.name, phone: event.phone, address: event.address, id: event.id);
+      });
+    } catch (e) {
+      //print('Ошибка при получении данных пользователя: $e');
+      rethrow;
     }
   }
 }
