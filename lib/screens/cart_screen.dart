@@ -111,7 +111,7 @@ class _CartScreenState extends State<CartScreen> {
     //раскомментить для тестовых данных
     final CartRepository _cartRepository = getIt<CartRepository>();
     //_cartRepository.addProductToCart(products[0]);
-   // _cartRepository.addProductToCart(products[1]);
+    // _cartRepository.addProductToCart(products[1]);
     super.initState();
   }
 
@@ -146,23 +146,39 @@ class _CartScreenState extends State<CartScreen> {
                 LoadedCartState() => (state.cart.products.isNotEmpty)
                     ? _buildCart(context, state)
                     : Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(25),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.orange[100]!,
-                                Colors.orange[500]!,
-                              ],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/empty_cart.jpg',
+                              height: 200,
                             ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Text(
-                            'Корзина пуста',
-                            style: TextStyle(fontSize: 16),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Container(
+                                padding: const EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xffb7ff9d),
+                                      Color(0xff2abb34),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Text(
+                                  'Корзина пуста',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    //fontWeight: FontWeight.bold,
+                                  //color: Colors.orange,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                 ErrorCartState() => const Center(
