@@ -29,18 +29,7 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
           ),
           body: Center(
             child: Container(
-             // color: Colors.grey[200],
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFFFFFFFF),
-                    Theme.of(context).colorScheme.inversePrimary,
-                  ],
-                ),
-              ),
-              //color: Theme.of(context).colorScheme.surface,
+             color: Colors.grey[200],
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
