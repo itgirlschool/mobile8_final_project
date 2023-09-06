@@ -58,13 +58,15 @@ class RemoveProductFromCart extends CartEvent {
 }
 
 class PayEvent extends CartEvent {
-  final int totalPrice;
+  final Cart cart;
+  final String address;
+  final Map<String, int> stock;
 
-  const PayEvent({required this.totalPrice});
+  const PayEvent({ required this.address, required this.stock, required this.cart});
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PayEvent && runtimeType == other.runtimeType && totalPrice == other.totalPrice;
+  bool operator ==(Object other) => identical(this, other) || other is PayEvent && runtimeType == other.runtimeType && cart == other.cart;
 
   @override
-  int get hashCode => totalPrice.hashCode;
+  int get hashCode => cart.hashCode;
 }

@@ -244,7 +244,7 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         onPressed: () {
                           context.read<CartBloc>().add(
-                                PayEvent(totalPrice: state.cart.totalPrice),
+                                PayEvent(cart: state.cart, stock: state.stock, address: state.address),
                               );
                         },
                         child: Row(

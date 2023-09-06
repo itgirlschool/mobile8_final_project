@@ -101,9 +101,10 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
   //метод который вызывается при событии PayEvent
   Future<void> _onPayEvent(PayEvent event, Emitter<CartState> emit) async {
+    emit(PaymentLoadingCartState(cart: event.cart, stock: event.stock, address: event.address));
     try {
       //получаем результат оплаты
-      var result = await _paymentRepository.pay(Payment(price: event.totalPrice));
+      var result = await _paymentRepository.pay(Payment(price: event.cart.totalPrice));
       if (result == 'success') {
         //если оплата прошла успешно, то добавляем заказ и очищаем корзину
         await _orderRepository.addOrder();
