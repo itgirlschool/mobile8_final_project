@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 
 import '../data/model/chat_message.dart';
@@ -12,11 +13,12 @@ class SupportScreen extends StatefulWidget {
 }
 
 class _SupportScreenState extends State<SupportScreen> {
-  List<ChatMessage> messages = [
-
-    ChatMessage(messageContent: "Здравстуйте! Мы разбираемся со сложившейся ситуацией и скоро напишим вам.", messageType: "receiver"),
-    ChatMessage(messageContent: "В моем последнем заказе не привезли яблоки", messageType: "sender"),
-  ];
+  // List<ChatMessage> messages = [
+  //
+  //   ChatMessage(messageContent: "Здравстуйте! Мы разбираемся со сложившейся ситуацией и скоро напишим вам.", messageType: "receiver", messageTime: DateTime.now()),
+  //   ChatMessage(messageContent: "В моем последнем заказе не привезли яблоки", messageType: "sender",  messageTime: DateTime.now()),
+  // ];
+  List<ChatMessage> messages = [];
 
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
@@ -26,7 +28,7 @@ class _SupportScreenState extends State<SupportScreen> {
     await Future.delayed(const Duration(milliseconds: 1000));
     SchedulerBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        messages.insert(0, ChatMessage(messageContent: "Здравстуйте! Мы разбираемся со сложившейся ситуацией и скоро напишим вам.", messageType: "receiver"));
+        messages.insert(0, ChatMessage(messageContent: "Здравстуйте! Мы разбираемся со сложившейся ситуацией и скоро перезвоним вам.", messageType: "receiver",  messageTime: DateTime.now()));
       });
       if (_scrollController.hasClients) {
         const position = 0.0;
@@ -72,9 +74,19 @@ class _SupportScreenState extends State<SupportScreen> {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: messages[index].messageType == "receiver" ? Colors.grey.shade200 :
                           const Color(0xffbdf5ad)),
                           padding: const EdgeInsets.all(16),
-                          child: Text(
-                            messages[index].messageContent,
-                            style: const TextStyle(fontSize: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                messages[index].messageContent,
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                              const SizedBox(height: 5,),
+                              Text(
+                                DateFormat("dd.MM.yyyy HH:m").format(messages[index].messageTime, ),
+                                style: TextStyle(fontSize: 10, color: Colors.grey[800]),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -113,7 +125,7 @@ class _SupportScreenState extends State<SupportScreen> {
                           onPressed: () {
                             if (_textController.text.isNotEmpty) {
                               setState(() {
-                                messages.insert(0, ChatMessage(messageContent: _textController.text, messageType: "sender"));
+                                messages.insert(0, ChatMessage(messageContent: _textController.text, messageType: "sender",  messageTime: DateTime.now()));
                               });
                               addSupportAnswer();
                               _textController.clear();
