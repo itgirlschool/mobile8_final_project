@@ -75,14 +75,4 @@ class UserRepository {
     }
   }
 
-  Stream<User> getUserStream() {
-    try {
-      return _userRemoteDatasource.getUserStream().map((event) {
-        return User(email: event.email, name: event.name, phone: event.phone, address: event.address, id: event.id);
-      });
-    } catch (e) {
-      //print('Ошибка при получении данных пользователя: $e');
-      rethrow;
-    }
-  }
 }

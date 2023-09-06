@@ -18,9 +18,7 @@ class EditProfileEvent extends ProfileEvent {
 
   // Переопределяем оператор сравнения, это нужно в случае если мы будем сравнивать события одного типа по оператору сравнения, чтобы узнать изменилось ли событие
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is EditProfileEvent && runtimeType == other.runtimeType && user == other.user;
+  bool operator ==(Object other) => identical(this, other) || other is EditProfileEvent && runtimeType == other.runtimeType && user == other.user;
 
   // Переопределяем hashCode, это в случае если мы будем сравнивать события по hashCode
   @override
@@ -34,9 +32,19 @@ class UpdateProfileEvent extends ProfileEvent {
   const UpdateProfileEvent({required this.user});
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is UpdateProfileEvent && runtimeType == other.runtimeType && user == other.user;
+  bool operator ==(Object other) => identical(this, other) || other is UpdateProfileEvent && runtimeType == other.runtimeType && user == other.user;
+
+  @override
+  int get hashCode => user.hashCode;
+}
+
+class CancelEditProfileEvent extends ProfileEvent {
+  final User user;
+
+  const CancelEditProfileEvent({required this.user});
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is CancelEditProfileEvent && runtimeType == other.runtimeType && user == other.user;
 
   @override
   int get hashCode => user.hashCode;

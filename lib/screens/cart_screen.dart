@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/drawer.dart';
 import '../bloc/cart/cart_bloc.dart';
@@ -18,7 +19,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final _bloc = getIt<CartBloc>();
+  //final _bloc = getIt<CartBloc>();
+  final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
 
 //раскомментить для тестовых данных
   // Cart cart = Cart(

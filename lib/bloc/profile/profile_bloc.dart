@@ -15,6 +15,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<EditProfileEvent>(_onEditEvent);
     //при получении события UpdateProfileEvent вызывается метод _onUpdateEvent
     on<UpdateProfileEvent>(_onUpdateEvent);
+    //при получении события CancelEditProfileEvent вызывается метод _onCancelEditEvent
+    on<CancelEditProfileEvent>(_onCancelEditEvent);
     //добавляем событие LoadProfileEvent в самом начале когда открывается экран профиля
     add(const LoadProfileEvent());
   }
@@ -35,7 +37,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Future<void> _onEditEvent(EditProfileEvent event, Emitter<ProfileState> emit) async {
     try {
       //выводим состояние с профилем в режиме редактирования
-      emit(EditProfileState(user: event.user));
+        emit(EditProfileState(user: event.user));
     } catch (e) {
       emit(ErrorProfileState());
     }
@@ -47,9 +49,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       await _profileRepository.updateUser(event.user);
       //выводим состояние с обновленным профилем
       emit(LoadedProfileState(user: event.user));
+      //add(const LoadProfileEvent());
     } catch (e) {
       emit(ErrorProfileState());
     }
   }
 
+  Future<void> _onCancelEditEvent(CancelEditProfileEvent event, Emitter<ProfileState> emit) async {
+    try {
+      //выводим состояние с профилем в режиме просмотра
+      emit(LoadedProfileState(user: event.user));
+    } catch (e) {
+      emit(ErrorProfileState());
+    }
+  }
 }
