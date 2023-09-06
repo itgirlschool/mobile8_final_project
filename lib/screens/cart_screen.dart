@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/drawer.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../bloc/cart/cart_event.dart';
 import '../bloc/cart/cart_state.dart';
 import '../data/model/product_model.dart';
-import '../data/repositories/orders_repository.dart';
-import '../data/repositories/payment_repository.dart';
 import '../main.dart';
 import '../data/repositories/cart_repository.dart';
-import '../data/repositories/user_repository.dart';
+
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -20,7 +19,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final _bloc = CartBloc(getIt<CartRepository>(), getIt<UserRepository>(), getIt<PaymentRepository>(), getIt<OrdersRepository>());
+  //final _bloc = getIt<CartBloc>();
+  final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
 
 //раскомментить для тестовых данных
   // Cart cart = Cart(
@@ -111,7 +111,7 @@ class _CartScreenState extends State<CartScreen> {
     //раскомментить для тестовых данных
     final CartRepository _cartRepository = getIt<CartRepository>();
     //_cartRepository.addProductToCart(products[0]);
-   // _cartRepository.addProductToCart(products[1]);
+    //_cartRepository.addProductToCart(products[1]);
     super.initState();
   }
 
@@ -143,28 +143,8 @@ class _CartScreenState extends State<CartScreen> {
                 LoadingCartState() => const Center(
                     child: CircularProgressIndicator(),
                   ),
-                LoadedCartState() => (state.cart.products.isNotEmpty)
-                    ? _buildCart(context, state)
-                    : Center(
-                        child: Container(
-                          padding: const EdgeInsets.all(25),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.orange[100]!,
-                                Colors.orange[500]!,
-                              ],
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Text(
-                            'Корзина пуста',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ),
+                LoadedCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, false) : _buildEmptyCart(),
+                PaymentLoadingCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, true) : _buildEmptyCart(),
                 ErrorCartState() => const Center(
                     child: Text('Ошибка при загрузке корзины'),
                   ),
@@ -177,7 +157,46 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildCart(BuildContext context, LoadedCartState state) {
+  Center _buildEmptyCart() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/empty_cart.jpg',
+            height: 200,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xffb7ff9d),
+                    Color(0xff2abb34),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Text(
+                'Корзина пуста',
+                style: TextStyle(
+                  fontSize: 16,
+                  //fontWeight: FontWeight.bold,
+                  //color: Colors.orange,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCart(BuildContext context, state, bool paymentLoading) {
     return Builder(builder: (context) {
       return Column(
         children: [
@@ -211,41 +230,45 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8, right: 8),
-              child: SizedBox(
-                height: 50,
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 2,
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.orange,
+            child: !paymentLoading
+                ? Padding(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 2,
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.orange,
+                        ),
+                        onPressed: () {
+                          context.read<CartBloc>().add(
+                                PayEvent(cart: state.cart, stock: state.stock, address: state.address),
+                              );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Оформить заказ',
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Text(
+                              '${state.cart.totalPrice} руб.',
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(),
                   ),
-                  onPressed: () {
-                    context.read<CartBloc>().add(
-                          PayEvent(totalPrice: state.cart.totalPrice),
-                        );
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Оформить заказ',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      Text(
-                        '${state.cart.totalPrice} руб.',
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           ),
           const SizedBox(
             height: 8,
@@ -255,7 +278,7 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  ListTile _buildProductTile(int index, LoadedCartState state) {
+  ListTile _buildProductTile(int index, state) {
     return ListTile(
       contentPadding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
       leading: Image.network(
@@ -292,7 +315,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildButtons(int index, LoadedCartState state) {
+  Widget _buildButtons(int index, state) {
     return Builder(builder: (context) {
       return SizedBox(
         width: 100,
@@ -309,7 +332,7 @@ class _CartScreenState extends State<CartScreen> {
                 iconSize: 20,
                 onPressed: () {
                   context.read<CartBloc>().add(
-                        RemoveProductFromCart(product: state.cart.products[index]),
+                        RemoveProductFromCart(product: state.cart.products[index], state: state),
                       );
                 },
                 icon: const Icon(
@@ -332,7 +355,7 @@ class _CartScreenState extends State<CartScreen> {
                   onPressed: () {
                     if (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)) {
                       context.read<CartBloc>().add(
-                            AddProductToCart(product: state.cart.products[index]),
+                            AddProductToCart(product: state.cart.products[index], state: state),
                           );
                     }
                   },
