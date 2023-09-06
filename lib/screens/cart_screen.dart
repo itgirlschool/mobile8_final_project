@@ -6,11 +6,9 @@ import '../bloc/cart/cart_bloc.dart';
 import '../bloc/cart/cart_event.dart';
 import '../bloc/cart/cart_state.dart';
 import '../data/model/product_model.dart';
-import '../data/repositories/orders_repository.dart';
-import '../data/repositories/payment_repository.dart';
 import '../main.dart';
 import '../data/repositories/cart_repository.dart';
-import '../data/repositories/user_repository.dart';
+
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -20,7 +18,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final _bloc = CartBloc(getIt<CartRepository>(), getIt<UserRepository>(), getIt<PaymentRepository>(), getIt<OrdersRepository>());
+  final _bloc = getIt<CartBloc>();
 
 //раскомментить для тестовых данных
   // Cart cart = Cart(
