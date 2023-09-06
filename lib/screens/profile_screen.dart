@@ -99,24 +99,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
             ],
           ),
-          body: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                _buildTextFormField(controller: _nameController, context: context, isEdited: isEdited, labelText: 'Имя'),
-                _buildTextFormField(controller: _phoneController, context: context, isEdited: isEdited, labelText: 'Телефон'),
-                _buildTextFormField(controller: _addressController, context: context, isEdited: isEdited, labelText: 'Адрес доставки'),
-                TextFormField(
-                  initialValue: userEmail,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'Электронная почта',
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).dividerColor),
+          body: SingleChildScrollView(
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  _buildTextFormField(
+                      controller: _nameController,
+                      context: context,
+                      isEdited: isEdited,
+                      labelText: 'Имя'),
+                  _buildTextFormField(
+                      controller: _phoneController,
+                      context: context,
+                      isEdited: isEdited,
+                      labelText: 'Телефон'),
+                  _buildTextFormField(
+                      controller: _addressController,
+                      context: context,
+                      isEdited: isEdited,
+                      labelText: 'Адрес доставки'),
+                  TextFormField(
+                    initialValue: userEmail,
+                    readOnly: true,
+                    decoration: InputDecoration(
+                      labelText: 'Электронная почта',
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Theme.of(context).dividerColor),
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -124,7 +139,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildTextFormField({required TextEditingController controller, required BuildContext context, bool isEdited = false, required String labelText}) {
+  Widget _buildTextFormField(
+      {required TextEditingController controller,
+      required BuildContext context,
+      bool isEdited = false,
+      required String labelText}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: TextFormField(
