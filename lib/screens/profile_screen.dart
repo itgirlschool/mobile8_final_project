@@ -1,12 +1,11 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
-
 import 'package:flutter/material.dart';
-
-bool isEdited = false;
-String userName = 'Иван Иванов';
-String userPhone = '8934304243';
-String userAddress = 'Улица Что-то, город Какой-то';
-String userEmail = 'fdfd@sdfs.ru';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/profile/profile_bloc.dart';
+import '../bloc/profile/profile_event.dart';
+import '../bloc/profile/profile_state.dart';
+import '../data/model/user_model.dart';
+import '../data/repositories/user_repository.dart';
+import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,130 +15,154 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _addressController = TextEditingController();
+  //объявляем переменную блока чеоез конструктор гетит
+  final _bloc = ProfileBloc(getIt<UserRepository>());
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  String _newUserName = '';
+  String _newUserPhone = '';
+  String _newUserAddress = '';
 
-  @override
-  void initState() {
-    isEdited = false;
-    _nameController.text = userName;
-    _phoneController.text = userPhone;
-    _addressController.text = userAddress;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    isEdited = false;
-    super.dispose();
-    _addressController.dispose();
-    _nameController.dispose();
-    _phoneController.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            surfaceTintColor: Colors.white,
-            title: const Text('Профиль'),
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
+        //подключаем блок
+        child: BlocProvider(
+          create: (context) => _bloc,
+          //билдим экран с помощью блок билдера
+          child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
+            //возвращаем виджеты в зависимости от состояния
+            return switch (state) {
+              LoadingProfileState() => const Center(child: CircularProgressIndicator()),
+              LoadedProfileState() => _buildProfile(context, state),
+              EditProfileState() => _buildProfile(context, state),
+              ErrorProfileState() => const Center(child: Text('Ошибка')),
+            };
+          }),
+        ),
+      ),
+    );
+  }
+
+  //экран для состояния, когда отображается профиль без редактирования
+  Widget _buildProfile(BuildContext context, state) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
+        title: const Text('Профиль'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          state is EditProfileState
+              ? TextButton(
+                  onPressed: () {
+                    context.read<ProfileBloc>().add(CancelEditProfileEvent(user: state.user));
+                  },
+                  child: const Text('Отменить'))
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
+          state is EditProfileState
+              ? TextButton(
+                  onPressed: () {
+                    if (_formkey.currentState!.validate()) {
+                      _formkey.currentState!.save();
+                      context.read<ProfileBloc>().add(UpdateProfileEvent(user: User(name: _newUserName, phone: _newUserPhone, address: _newUserAddress, email: state.user.email)));
+                    }
+                  },
+                  child: const Text('Сохранить'))
+              : const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
+          state is LoadedProfileState ? TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                //при нажатии на кнопку редактирования отправляем событие в блок
+                context.read<ProfileBloc>().add(EditProfileEvent(user: state.user));
               },
-            ),
-            actions: [
-              isEdited
-                  ? TextButton(
-                      onPressed: () {
-                        setState(() {
-                          isEdited = false;
-                          _nameController.text = userName;
-                          _phoneController.text = userPhone;
-                          _addressController.text = userAddress;
-                        });
-                      },
-                      child: const Text('Отменить'))
-                  : const SizedBox(
-                      height: 0,
-                      width: 0,
-                    ),
-              isEdited
-                  ? TextButton(
-                      onPressed: () {
-                        setState(() {
-                          isEdited = false;
-                          userAddress = _addressController.text;
-                          userName = _nameController.text;
-                          userPhone = _phoneController.text;
-                        });
-                      },
-                      child: const Text('Сохранить'))
-                  : const SizedBox(
-                      height: 0,
-                      width: 0,
-                    ),
-              !isEdited
-                  ? TextButton(
-                      onPressed: () {
-                        setState(() {
-                          isEdited = true;
-                        });
-                      },
-                      child: const Text('Редактировать'))
-                  : const SizedBox(
-                      height: 0,
-                      width: 0,
-                    ),
-            ],
-          ),
-          body: Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                _buildTextFormField(controller: _nameController, context: context, isEdited: isEdited, labelText: 'Имя'),
-                _buildTextFormField(controller: _phoneController, context: context, isEdited: isEdited, labelText: 'Телефон'),
-                _buildTextFormField(controller: _addressController, context: context, isEdited: isEdited, labelText: 'Адрес доставки'),
-                TextFormField(
-                  initialValue: userEmail,
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    labelText: 'Электронная почта',
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Theme.of(context).dividerColor),
-                    ),
+              child: const Text('Редактировать')) :
+              const SizedBox(
+                  height: 0,
+                  width: 0,
+                ),
+        ],
+      ),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: Form(
+          key: _formkey,
+          child: Column(
+            children: [
+              _buildTextFormField(
+                  context: context,
+                  labelText: 'Имя',
+                  initialValue: state.user.name,
+                  state: state,
+                  validator: _validateName,
+                  onSaved: (value) {
+                    _newUserName = value!;
+                  }),
+              _buildTextFormField(
+                  context: context,
+                  labelText: 'Телефон',
+                  initialValue: state.user.phone,
+                  state: state,
+                  validator: _validatePhone,
+                  onSaved: (value) {
+                    _newUserPhone = value!;
+                  }),
+              _buildTextFormField(
+                  context: context,
+                  labelText: 'Адрес доставки',
+                  initialValue: state.user.address,
+                  state: state,
+                  validator: _validateAddress,
+                  onSaved: (value) {
+                    _newUserAddress = value!;
+                  }),
+              TextFormField(
+                initialValue: state.user.email,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: 'Электронная почта',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).dividerColor),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildTextFormField({required TextEditingController controller, required BuildContext context, bool isEdited = false, required String labelText}) {
+  Widget _buildTextFormField({required BuildContext context, required String labelText, required String initialValue, required state, required validator, required Function(String?)? onSaved}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15),
       child: TextFormField(
-        controller: controller,
-        readOnly: !isEdited,
+        readOnly: state is LoadedProfileState ? true : false,
+        initialValue: initialValue,
+        validator: validator,
+        onSaved: onSaved,
         decoration: InputDecoration(
           labelText: labelText,
-          enabledBorder: isEdited
+          enabledBorder: state is! LoadedProfileState
               ? OutlineInputBorder(
                   borderSide: BorderSide(color: Theme.of(context).primaryColor),
                 )
               : UnderlineInputBorder(
                   borderSide: BorderSide(color: Theme.of(context).dividerColor),
                 ),
-          focusedBorder: isEdited
+          focusedBorder: state is! LoadedProfileState
               ? const OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 )
@@ -149,5 +172,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+
+  String? _validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Пожалуйста, введите имя';
+    }
+    return null;
+  }
+
+  String? _validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Пожалуйста, введите номер телефона';
+    } else if (value.length != 10) {
+      return 'Некорректный номер телефона';
+    }
+    return null;
+  }
+
+  String? _validateAddress(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Пожалуйста, введите адрес доставки';
+    }
+    return null;
   }
 }
