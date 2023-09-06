@@ -32,3 +32,19 @@ class LoadedCartState extends CartState {
 class ErrorCartState extends CartState {}
 
 class PaymentErrorCartState extends CartState {}
+
+class PaymentLoadingCartState extends CartState {
+  final Cart cart;
+  final Map<String, int> stock;
+  final String address;
+
+  const PaymentLoadingCartState({required this.cart, required this.stock, required this.address});
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PaymentLoadingCartState && runtimeType == other.runtimeType && cart == other.cart;
+
+  @override
+  int get hashCode => cart.hashCode;
+}

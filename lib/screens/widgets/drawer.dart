@@ -14,7 +14,7 @@ class DrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.only(left: 10),
         children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

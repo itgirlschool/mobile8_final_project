@@ -1,4 +1,7 @@
+import 'package:mobile8_final_project/bloc/cart/cart_state.dart';
 import 'package:mobile8_final_project/data/model/product_model.dart';
+
+import '../../data/model/cart_model.dart';
 
 // Абстрактный класс CartEvent
 class CartEvent {
@@ -6,18 +9,34 @@ class CartEvent {
 }
 
 // Событие загрузки корзины
-class LoadCartEvent extends CartEvent {}
+class LoadCartEvent extends CartEvent {
+  const LoadCartEvent();
+}
 
-// Событие добавления товара в корзину
-class AddProductToCart extends CartEvent{
-  final Product product;
+class UpdateCartEvent extends CartEvent {
+  final Cart cart;
+  final Map<String, int> stock;
+  final String address;
 
-  const AddProductToCart({required this.product});
+  const UpdateCartEvent({required this.cart, required this.stock, required this.address});
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is AddProductToCart && runtimeType == other.runtimeType && product == other.product;
+  bool operator ==(Object other) => identical(this, other) || other is UpdateCartEvent && runtimeType == other.runtimeType && cart == other.cart;
+
+  @override
+  int get hashCode => cart.hashCode;
+}
+
+// Событие добавления товара в корзину
+class AddProductToCart extends CartEvent {
+  final Product product;
+
+  LoadedCartState state;
+
+  AddProductToCart({required this.product, required this.state});
+
+  @override
+  bool operator ==(Object other) => identical(this, other) || other is AddProductToCart && runtimeType == other.runtimeType && product == other.product;
 
   @override
   int get hashCode => product.hashCode;
@@ -27,12 +46,12 @@ class AddProductToCart extends CartEvent{
 class RemoveProductFromCart extends CartEvent {
   final Product product;
 
-  const RemoveProductFromCart({required this.product});
+  LoadedCartState state;
+
+  RemoveProductFromCart({required this.product, required this.state});
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is RemoveProductFromCart && runtimeType == other.runtimeType && product == other.product;
+  bool operator ==(Object other) => identical(this, other) || other is RemoveProductFromCart && runtimeType == other.runtimeType && product == other.product;
 
   @override
   int get hashCode => product.hashCode;
@@ -44,9 +63,7 @@ class PayEvent extends CartEvent {
   const PayEvent({required this.totalPrice});
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is PayEvent && runtimeType == other.runtimeType && totalPrice == other.totalPrice;
+  bool operator ==(Object other) => identical(this, other) || other is PayEvent && runtimeType == other.runtimeType && totalPrice == other.totalPrice;
 
   @override
   int get hashCode => totalPrice.hashCode;
