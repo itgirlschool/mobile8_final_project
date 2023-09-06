@@ -28,7 +28,13 @@ class DrawerWidget extends StatelessWidget {
             ],
           ),
           ListTile(
-            title: const Text('Профиль'),
+            title: const Row(
+              children: [
+                Icon(Icons.person),
+                SizedBox(width: 10,),
+                Text('Профиль'),
+              ],
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -37,7 +43,13 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Заказы'),
+            title: const Row(
+              children: [
+                Icon(Icons.list),
+                SizedBox(width: 10,),
+                Text('Заказы'),
+              ],
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -46,7 +58,13 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Поддержка'),
+            title: const Row(
+              children: [
+                Icon(Icons.chat_bubble_outline),
+                SizedBox(width: 10,),
+                Text('Поддержка'),
+              ],
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -55,7 +73,13 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           ListTile(
-              title: const Text('Выйти'),
+              title: const Row(
+                children: [
+                  Icon(Icons.exit_to_app),
+                  SizedBox(width: 10,),
+                  Text('Выйти'),
+                ],
+              ),
               onTap: () {
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
               }),

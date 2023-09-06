@@ -111,7 +111,7 @@ class _CartScreenState extends State<CartScreen> {
     //раскомментить для тестовых данных
     final CartRepository _cartRepository = getIt<CartRepository>();
     //_cartRepository.addProductToCart(products[0]);
-    // _cartRepository.addProductToCart(products[1]);
+    //_cartRepository.addProductToCart(products[1]);
     super.initState();
   }
 
