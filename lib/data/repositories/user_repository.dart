@@ -35,7 +35,8 @@ class UserRepository {
       return result;
     } catch (e) {
      // print('Ошибка при регистрации: $e');
-      rethrow;
+      return e.toString();
+      //rethrow;
     }
   }
 
@@ -74,6 +75,10 @@ class UserRepository {
      // print('Ошибка при получении данных пользователя: $e');
       rethrow;
     }
+  }
+
+  bool isUserLoggedIn() {
+    return _userRemoteDatasource.isUserLoggedIn();
   }
 
 }

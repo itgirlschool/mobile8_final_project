@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile8_final_project/data/repositories/user_repository.dart';
 
+import '../../main.dart';
 import '../login_screen.dart';
 import '../orders_history_screen.dart';
 import '../profile_screen.dart';
@@ -81,6 +83,7 @@ class DrawerWidget extends StatelessWidget {
                 ],
               ),
               onTap: () {
+                getIt.get<UserRepository>().logout();
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
               }),
         ],

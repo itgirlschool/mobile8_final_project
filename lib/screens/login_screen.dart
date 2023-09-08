@@ -51,7 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       'Ярмаркет',
                       style: TextStyle(
                         fontSize: 35,
-                        //backgroundColor: Colors.white,
                       ),
                     ),
                   ),
@@ -135,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ElevatedButton(
@@ -168,11 +167,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    UserRepository userRepository = getIt.get<UserRepository>();
     final String login = _loginController.text;
     final String password = _passwordController.text;
     try {
-      String result = await userRepository.login(login, password);
+      String result = await getIt.get<UserRepository>().login(login, password);
       if (result == 'success') {
         Navigator.push(
           context,

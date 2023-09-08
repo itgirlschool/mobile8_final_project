@@ -46,12 +46,12 @@ class UserRemoteDatasource {
   Future<String> updateUser(UserDto user) async {
 
     try {
-      var userId = '4';
-      //TODO раскомментить, когда не нужны будут тестовые данные
-      //User userFirebase = FirebaseAuth.instance.currentUser!;
+      //var userId = '4';
+
+      User userFirebase = FirebaseAuth.instance.currentUser!;
       CollectionReference profileReference = firestore.collection('profiles');
-     // await profileReference.doc(userFirebase.uid).update({
-      await profileReference.doc(userId).update({
+      await profileReference.doc(userFirebase.uid).update({
+      //await profileReference.doc(userId).update({
         'name': user.name,
         'phone': user.phone,
         'address': user.address,
@@ -86,23 +86,23 @@ class UserRemoteDatasource {
   }
 
   Future<UserDto> getUser() async {
-    //TODO раскомментить, когда не нужны будут тестовые данные
-   // User user = FirebaseAuth.instance.currentUser!;
-    var userId = '4';
+
+    User user = FirebaseAuth.instance.currentUser!;
+   // var userId = '4';
     try {
-      //DocumentReference profileReference = firestore.collection('profiles').doc(user.uid);
-      DocumentReference profileReference = firestore.collection('profiles').doc(userId);
+      DocumentReference profileReference = firestore.collection('profiles').doc(user.uid);
+      //DocumentReference profileReference = firestore.collection('profiles').doc(userId);
       DocumentSnapshot profileSnapshot = await profileReference.get();
       if (!profileSnapshot.exists) {
         throw Exception('Пользователь не найден');
       } else {
         var profile = profileSnapshot.data() as Map<String, dynamic>;
         return UserDto(
-         // id: user.uid,
-          id: userId,
+          id: user.uid,
+          //id: userId,
           name: profile['name'],
-          email: "email@e.com",
-         // email: user.email!,
+          //email: "email@e.com",
+          email: user.email!,
           phone: profile['phone'],
           address: profile['address'],
         );
@@ -110,5 +110,9 @@ class UserRemoteDatasource {
     } catch (e) {
       throw Exception('Ошибка при получении пользователя');
     }
+  }
+
+  bool isUserLoggedIn() {
+    return FirebaseAuth.instance.currentUser != null;
   }
 }

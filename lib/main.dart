@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/data/datasource/cart_remote_datasource.dart';
 import 'package:mobile8_final_project/data/datasource/payment_remote_datasource.dart';
 import 'package:mobile8_final_project/data/datasource/user_remote_datasource.dart';
+import 'package:mobile8_final_project/screens/home_screen.dart';
 import 'package:mobile8_final_project/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobile8_final_project/stripe_public_key.dart';
@@ -47,11 +48,19 @@ class FoodShopApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green).copyWith(
-          background: Color(0xFFFFFFFF),
+          background: const Color(0xFFFFFFFF),
           surfaceTint: Colors.white,
         ),
       ),
-      home: const LoginScreen(),
+      home: _startingRoute(),
     );
+  }
+
+  Widget _startingRoute() {
+    UserRepository userRepository = GetIt.I.get();
+    if (userRepository.isUserLoggedIn()) {
+      return const HomeScreen();
+    }
+    return const LoginScreen();
   }
 }

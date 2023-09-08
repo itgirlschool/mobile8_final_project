@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile8_final_project/screens/login_screen.dart';
+import '../data/model/user_model.dart';
+import '../data/repositories/user_repository.dart';
+import '../main.dart';
+import 'home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -27,7 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(30),
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 0),
               child: Column(
                 children: [
                   _buildTextFormField(
@@ -82,6 +85,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
               ),
             ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 resultCheck = _checkRegistration(
@@ -96,7 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Проверьте данные'),
+                        title: const Text('Проверьте данные'),
                         content: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,18 +127,62 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     },
                   );
                 } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
-                  );
+                 _register();
                 }
               },
-              child: const Text('Зарегистрироваться'),
+              child: const Text('Зарегистрироваться',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> _register() async {
+    String result;
+    User user = User(
+      name: _nameController.text,
+      phone: _phoneController.text,
+      address: _adressController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+
+    try {
+      result = await  getIt.get<UserRepository>().signUp(user);
+      if (result == 'success') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        _buildErrorMessage(result);
+      }
+    } catch (e) {
+      _buildErrorMessage(e.toString());
+      //print('Ошибка при входе: $e');
+    }
+  }
+
+  Future<void> _buildErrorMessage(String message) {
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Ошибка регистрации'),
+            content: Text(message),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text('ОК'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
     );
   }
 }

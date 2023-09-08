@@ -10,10 +10,9 @@ class CartRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<void> addProductToCart(ProductDto productDto) async {
-    //TODO раскомментить, когда не нужны будут тестовые данные
-    //User user = FirebaseAuth.instance.currentUser!;
-    //String userId = user.uid;
-    String userId = '4';
+    User user = FirebaseAuth.instance.currentUser!;
+    String userId = user.uid;
+    //String userId = '4';
 
     var product = productDto.toMap();
     try {
@@ -86,10 +85,9 @@ class CartRemoteDatasource {
   }
 
   Future<void> removeProductFromCart(String productId) async {
-    //TODO раскомментить, когда не нужны будут тестовые данные
-    //User user = FirebaseAuth.instance.currentUser!;
-    //String userId = user.uid;
-    String userId = '4';
+    User user = FirebaseAuth.instance.currentUser!;
+    String userId = user.uid;
+    //String userId = '4';
 
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -137,11 +135,10 @@ class CartRemoteDatasource {
   }
 
   Future<void> clearCart() async {
-    //TODO раскомментить, когда не нужны будут тестовые данные
-    //User user = FirebaseAuth.instance.currentUser!;
-    //String userId = user.uid;
+    User user = FirebaseAuth.instance.currentUser!;
+    String userId = user.uid;
 
-    String userId = '4';
+    //String userId = '4';
 
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -155,11 +152,10 @@ class CartRemoteDatasource {
   }
 
   Future<CartDto> getCart() async {
-    //TODO раскомментить, когда не нужны будут тестовые данные
-    //User user = FirebaseAuth.instance.currentUser!;
-    //String userId = user.uid;
+    User user = FirebaseAuth.instance.currentUser!;
+    String userId = user.uid;
 
-    String userId = '4';
+    //String userId = '4';
 
     try {
       DocumentReference cartReference = firestore.collection('carts').doc(userId);
@@ -177,11 +173,10 @@ class CartRemoteDatasource {
 
   Stream<CartDto> getCartStream() {
     try {
-      //TODO раскомментить, когда не нужны будут тестовые данные
-      //User user = FirebaseAuth.instance.currentUser!;
-      //String userId = user.uid;
+      User user = FirebaseAuth.instance.currentUser!;
+      String userId = user.uid;
 
-      String userId = '4';
+     // String userId = '4';
 
       DocumentReference cartReference = FirebaseFirestore.instance.collection('carts').doc(userId);
 
