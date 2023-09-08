@@ -22,7 +22,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _newUserPhone = '';
   String _newUserAddress = '';
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -83,13 +82,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 0,
                   width: 0,
                 ),
-          state is LoadedProfileState ? TextButton(
-              onPressed: () {
-                //при нажатии на кнопку редактирования отправляем событие в блок
-                context.read<ProfileBloc>().add(EditProfileEvent(user: state.user));
-              },
-              child: const Text('Редактировать')) :
-              const SizedBox(
+          state is LoadedProfileState
+              ? TextButton(
+                  onPressed: () {
+                    //при нажатии на кнопку редактирования отправляем событие в блок
+                    context.read<ProfileBloc>().add(EditProfileEvent(user: state.user));
+                  },
+                  child: const Text('Редактировать'))
+              : const SizedBox(
                   height: 0,
                   width: 0,
                 ),
@@ -110,15 +110,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onSaved: (value) {
                     _newUserName = value!;
                   }),
-              _buildTextFormField(
-                  context: context,
-                  labelText: 'Телефон',
-                  initialValue: state.user.phone,
-                  state: state,
-                  validator: _validatePhone,
-                  onSaved: (value) {
-                    _newUserPhone = value!;
-                  }),
+              Row(
+                children: [
+                  Padding(
+                    padding: state is LoadedProfileState ? const EdgeInsets.only(right: 4, top: 4) : const EdgeInsets.only(right: 4, bottom: 14),
+                    child: const Text(
+                      '+7',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                  Expanded(
+                    child: _buildTextFormField(
+                        context: context,
+                        labelText: 'Телефон',
+                        initialValue: state.user.phone,
+                        state: state,
+                        validator: _validatePhone,
+                        onSaved: (value) {
+                          _newUserPhone = value!;
+                        }),
+                  ),
+                ],
+              ),
               _buildTextFormField(
                   context: context,
                   labelText: 'Адрес доставки',
@@ -144,7 +157,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
 
   Widget _buildTextFormField({required BuildContext context, required String labelText, required String initialValue, required state, required validator, required Function(String?)? onSaved}) {
     return Padding(
@@ -174,7 +186,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
 
   String? _validateName(String? value) {
     if (value == null || value.isEmpty) {
