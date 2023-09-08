@@ -16,7 +16,8 @@ class UserRepository {
       return result;
     } catch (e) {
      // print('Ошибка при входе: $e');
-      rethrow;
+      return e.toString();
+     // rethrow;
     }
   }
 

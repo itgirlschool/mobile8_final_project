@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile8_final_project/data/repositories/user_repository.dart';
 import 'package:mobile8_final_project/screens/register_screen.dart';
 
+import '../main.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -18,13 +20,13 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/yarmarket_bg.jpg",),
-            opacity: 0.3,
-            fit: BoxFit.cover
-          ),
+              image: AssetImage(
+                "assets/yarmarket_bg.jpg",
+              ),
+              opacity: 0.3,
+              fit: BoxFit.cover),
           //   gradient: LinearGradient(
           // begin: Alignment.topLeft,
           // end: Alignment.bottomRight,
@@ -47,11 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: const Text(
                       'Ярмаркет',
-                      style: TextStyle(fontSize: 35,
-                      //backgroundColor: Colors.white,
-
+                      style: TextStyle(
+                        fontSize: 35,
+                        //backgroundColor: Colors.white,
                       ),
-
                     ),
                   ),
                   const SizedBox(
@@ -61,45 +62,56 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller: _loginController,
                     decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      labelText: 'Логин',
-                      enabledBorder:  const OutlineInputBorder(
+                      labelText: 'Логин (электронная почта)',
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
-                        borderSide: BorderSide(color: Color(0xff7a7a7a),
-                           width: 1.0,),
+                        borderSide: BorderSide(
+                          color: Color(0xff7a7a7a),
+                          width: 1.0,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(10),
                         ),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.inversePrimary
-                          , width: 2.0,),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          width: 2.0,
+                        ),
                       ),
                       border: const OutlineInputBorder(),
                       filled: true,
                       fillColor: Theme.of(context).colorScheme.surface,
                     ),
                   ),
-                  const SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   TextField(
                     controller: _passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       labelText: 'Пароль',
-                      enabledBorder:  const OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
                         ),
-                        borderSide: BorderSide(color: Color(0xff7a7a7a),
-                          width: 1.0,),
+                        borderSide: BorderSide(
+                          color: Color(0xff7a7a7a),
+                          width: 1.0,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(10),
                         ),
-                        borderSide: BorderSide(color: Theme.of(context).colorScheme.inversePrimary
-                          , width: 2.0,),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          width: 2.0,
+                        ),
                       ),
                       border: const OutlineInputBorder(),
                       filled: true,
@@ -117,48 +129,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                    onPressed: () {
-                      /*if (notAuthorized) {
-                        showDialog<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Ошибка авторизации'),
-                              content: const Text(''),
-                              actions: <Widget>[
-                                ElevatedButton(
-                                  child: Text('ОК'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomeScreen()),
-                        );
-                      }*/
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const HomeScreen()),
-                      );
-                    },
+                    onPressed: _login,
                     child: const Text(
                       'Войти',
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
                   SizedBox(
-                    height: 10,),
+                    height: 10,
+                  ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:Colors.orangeAccent,
-
+                      backgroundColor: Colors.orangeAccent,
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -170,9 +152,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         MaterialPageRoute(builder: (context) => const RegisterScreen()),
                       );
                     },
-                    child: const Text('Регистрация', style:
-                      TextStyle(fontSize: 20, color: Colors.white
-                      ),),
+                    child: const Text(
+                      'Регистрация',
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -182,5 +165,45 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Future<void> _login() async {
+    UserRepository userRepository = getIt.get<UserRepository>();
+    final String login = _loginController.text;
+    final String password = _passwordController.text;
+    try {
+      String result = await userRepository.login(login, password);
+      if (result == 'success') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } else {
+        _buildErrorMessage();
+      }
+    } catch (e) {
+      _buildErrorMessage();
+      //print('Ошибка при входе: $e');
+    }
+  }
+
+  Future<void> _buildErrorMessage() {
+    return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Ошибка авторизации'),
+            content: const Text('Неверный логин или пароль'),
+            actions: <Widget>[
+              ElevatedButton(
+                child: const Text('ОК'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
   }
 }

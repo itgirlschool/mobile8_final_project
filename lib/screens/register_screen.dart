@@ -15,7 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordAgainController = TextEditingController();
-  late String? resultCheck;
+  List<String> resultCheck = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,8 +41,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           padding: const EdgeInsets.only(top: 15, right: 5),
                           child: const Text(
                             '+7',
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 18),
                           )),
+                      SizedBox(width: 5),
                       Expanded(
                         child: _buildTextFormField(
                             controller: _phoneController,
@@ -89,14 +90,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     adressController: _adressController,
                     emailController: _emailController,
                     passwordController: _passwordController,
-                    passwordAgainController: _passwordAgainController);
-                if (resultCheck != 'true') {
+                    passwordAgainController: _passwordAgainController)!;
+                if (resultCheck.isNotEmpty) {
                   showDialog<void>(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text(resultCheck!),
-                        content: const Text(''),
+                        title: Text('Проверьте данные'),
+                        content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var i = 0; i < resultCheck.length; i++)
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Text('- ${resultCheck[i]}',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                        ],
+
+                        ),
                         actions: <Widget>[
                           ElevatedButton(
                             child: const Text('ОК'),
@@ -125,13 +139,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-String? _checkRegistration(
+List<String>? _checkRegistration(
     {required TextEditingController nameController,
     required TextEditingController phoneController,
     required TextEditingController adressController,
     required TextEditingController emailController,
     required TextEditingController passwordController,
     required TextEditingController passwordAgainController}) {
+  List<String> error = [];
   String? name = nameController.text;
   String? phone = phoneController.text;
   String? adress = adressController.text;
@@ -144,18 +159,22 @@ String? _checkRegistration(
       email == '' ||
       password == '' ||
       passwordAgain == '') {
-    return 'Не все поля заполнены';
+    error.add('Не все поля заполнены');
+    //return 'Не все поля заполнены';
   }
   if (validateEmail(email) != 1) {
-    return 'Ошибка в формате электронной почты';
+    error.add('Ошибка в формате электронной почты');
+   // return 'Ошибка в формате электронной почты';
   }
   if (validatePhone(phone) != true) {
-    return 'Ошибка в формате телефона';
+    error.add('Ошибка в формате телефона');
+    //return 'Ошибка в формате телефона';
   }
   if (password != passwordAgain) {
-    return 'Пароли не совпадают';
+    error.add('Пароли не совпадают');
+    //return 'Пароли не совпадают';
   }
-  return 'true';
+  return error;
 }
 
 Widget _buildTextFormField(
