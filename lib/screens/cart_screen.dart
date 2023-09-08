@@ -287,7 +287,9 @@ class _CartScreenState extends State<CartScreen> {
           if (loadingProgress == null) {
             return child;
           }
-          return const Icon(Icons.image);
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
         errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
           return const Icon(Icons.image_not_supported);

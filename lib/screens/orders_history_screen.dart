@@ -62,7 +62,16 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
   }
 
   Widget _buildOrdersList(state) {
-    return ListView.builder(
+    if(state.orders.isEmpty) {
+      return const Center(
+      child: Text('У вас еще нет заказов',
+        style: TextStyle(
+          fontSize: 18,
+
+        )),
+      );
+    } else {
+      return ListView.builder(
       itemCount: state.orders.length,
       itemBuilder: (context, index) {
         return Card(
@@ -74,6 +83,7 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
         );
       },
     );
+    }
   }
 
   Widget _buildProductsList(Order order) {
@@ -143,7 +153,7 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              DateFormat('dd.MM.yyyy HH:m').format(order.date),
+              DateFormat('dd.MM.yyyy HH:mm').format(order.date),
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
