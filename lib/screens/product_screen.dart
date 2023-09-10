@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mobile8_final_project/data/dto/product_dto.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
-import 'package:mobile8_final_project/mock_data.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({super.key});
+  final ProductDto product;
+  ProductScreen({super.key, required this.product});
 
   @override
-  State<ProductScreen> createState() => _ProductScreenState();
+  State<ProductScreen> createState() => _ProductScreenState(product);
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  ProductDto product = products[0];
+  ProductDto product;
   bool isInCart = true;
+
+  _ProductScreenState(this.product);
 
   @override
   Widget build(BuildContext context) {

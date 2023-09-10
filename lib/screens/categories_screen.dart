@@ -40,8 +40,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  const ProductsInCategoryScreen()),
+                              builder: (context) => ProductsInCategoryScreen(
+                                    categId: categories[index]['category'],
+                                  )),
                         );
                       },
                       child: Container(

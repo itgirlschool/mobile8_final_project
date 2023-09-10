@@ -6,17 +6,21 @@ import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import '../mock_data.dart';
 
 class ProductsInCategoryScreen extends StatefulWidget {
-  const ProductsInCategoryScreen({super.key});
+  final String categId;
+  const ProductsInCategoryScreen({super.key, required this.categId});
 
   @override
   State<ProductsInCategoryScreen> createState() =>
-      _ProductsInCategoryScreenState();
+      _ProductsInCategoryScreenState(categId);
 }
 
 class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
+  String categId;
+
+  _ProductsInCategoryScreenState(this.categId);
+
   @override
   Widget build(BuildContext context) {
-    String categId = '1';
     List<ProductDto> categProd = products
         .where(
           (element) => element.category == categId,
@@ -46,7 +50,9 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ProductScreen()),
+                            builder: (context) => ProductScreen(
+                                  product: categProd[index],
+                                )),
                       );
                     },
                     child: SizedBox(
