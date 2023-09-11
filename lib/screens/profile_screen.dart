@@ -96,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
       body: Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.only(left: 25, right: 25, top: 16),
         child: Form(
           key: _formkey,
           child: Column(

@@ -159,7 +159,7 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
               ),
             ),
             Text(
-              "${order.totalPrice.toString()} руб.",
+              "${order.totalPrice.toString()} ₽",
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ],

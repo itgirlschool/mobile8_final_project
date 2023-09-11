@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
+import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
 import 'package:mobile8_final_project/screens/widgets/drawer.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../bloc/cart/cart_event.dart';
@@ -9,7 +10,6 @@ import '../bloc/cart/cart_state.dart';
 import '../data/model/product_model.dart';
 import '../main.dart';
 import '../data/repositories/cart_repository.dart';
-
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -19,7 +19,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  //final _bloc = getIt<CartBloc>();
   final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
 
 //раскомментить для тестовых данных
@@ -117,40 +116,43 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const AppBarWidget(title: 'Корзина'),
-        drawer: const DrawerWidget(),
-        body: BlocProvider(
-          create: (_) => _bloc,
-          child: BlocListener<CartBloc, CartState>(
-            listenWhen: (previous, current) {
-              if (previous is LoadedCartState && current is PaymentErrorCartState) {
-                return true;
-              }
-              return false;
-            },
-            listener: (context, state) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Оплата не прошла'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            },
-            child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-              return switch (state) {
-                LoadingCartState() => const Center(
-                    child: CircularProgressIndicator(),
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: const AppBarWidget(title: 'Корзина'),
+          //drawer: const DrawerWidget(),
+          body: BlocProvider(
+            create: (_) => _bloc,
+            child: BlocListener<CartBloc, CartState>(
+              listenWhen: (previous, current) {
+                if (previous is LoadedCartState && current is PaymentErrorCartState) {
+                  return true;
+                }
+                return false;
+              },
+              listener: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Оплата не прошла'),
+                    backgroundColor: Colors.red,
                   ),
-                LoadedCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, false) : _buildEmptyCart(),
-                PaymentLoadingCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, true) : _buildEmptyCart(),
-                ErrorCartState() => const Center(
-                    child: Text('Ошибка при загрузке корзины'),
-                  ),
-                PaymentErrorCartState() => _buildPaymentError(context),
-              };
-            }),
+                );
+              },
+              child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+                return switch (state) {
+                  LoadingCartState() => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  LoadedCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, false) : _buildEmptyCart(),
+                  PaymentLoadingCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, true) : _buildEmptyCart(),
+                  ErrorCartState() => const Center(
+                      child: Text('Ошибка при загрузке корзины'),
+                    ),
+                  PaymentErrorCartState() => _buildPaymentError(context),
+                };
+              }),
+            ),
           ),
         ),
       ),
@@ -258,7 +260,7 @@ class _CartScreenState extends State<CartScreen> {
                               width: 15,
                             ),
                             Text(
-                              '${state.cart.totalPrice} руб.',
+                              '${state.cart.totalPrice} ₽',
                               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                           ],
@@ -295,7 +297,23 @@ class _CartScreenState extends State<CartScreen> {
           return const Icon(Icons.image_not_supported);
         },
       ),
-      trailing: _buildButtons(index, state),
+      trailing: CartButtons(
+        onPressedAdd: () {
+          if (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)) {
+            context.read<CartBloc>().add(
+                  AddProductToCart(product: state.cart.products[index], state: state),
+                );
+          }
+        },
+        onPressedRemove: () {
+          context.read<CartBloc>().add(
+                RemoveProductFromCart(product: state.cart.products[index], state: state),
+              );
+        },
+        isInStock: (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)),
+        quantity: state.cart.products[index].quantity,
+        price: state.cart.products[index].price,
+      ),
       title: Text(
         state.cart.products[index].name,
         overflow: TextOverflow.ellipsis,
@@ -311,13 +329,13 @@ class _CartScreenState extends State<CartScreen> {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          Text('${state.cart.products[index].price} руб.'),
+          Text('${state.cart.products[index].price} ₽.'),
         ],
       ),
     );
   }
 
-  Widget _buildButtons(int index, state) {
+  Widget _buildButtons(int index, state, onPressedAdd, onPressedRemove, addIconColor) {
     return Builder(builder: (context) {
       return SizedBox(
         width: 100,
@@ -373,7 +391,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildPaymentError(BuildContext context) {
     context.read<CartBloc>().add(
-          (LoadCartEvent()),
+          (const LoadCartEvent()),
         );
     return const Center(
       child: CircularProgressIndicator(),
