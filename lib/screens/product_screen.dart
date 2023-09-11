@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile8_final_project/data/dto/product_dto.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
+import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
 
 class ProductScreen extends StatefulWidget {
   final ProductDto product;
@@ -24,6 +25,8 @@ class _ProductScreenState extends State<ProductScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: const GoToCartButton(price: 300,),
             appBar: AppBarWidget(
               title: product.name,
             ),

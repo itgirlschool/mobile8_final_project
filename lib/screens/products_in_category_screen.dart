@@ -3,6 +3,7 @@ import 'package:mobile8_final_project/data/dto/product_dto.dart';
 import 'package:mobile8_final_project/screens/product_screen.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
+import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
 
 //import '../mock_data.dart';
 
@@ -184,12 +185,16 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: const GoToCartButton(
+            price: 300,
+          ),
           appBar: AppBarWidget(
             title: categories[int.parse(categId) - 1]['name'],
           ),
           body: Container(
             height: MediaQuery.of(context).size.height,
-            color: const Color(0xfffae3ec),
+            color: const Color(0xfffce6ee),
             //color: Color(0xffe2f5d6),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -206,64 +211,68 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                     ),
                     itemCount: categProd.length,
                     itemBuilder: (_, index) {
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ProductScreen(
-                                      product: categProd[index],
-                                    )),
-                          );
-                        },
-                        child: Card(
-                          color: Colors.white,
-                          child: SizedBox(
-                            height: 200,
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          fit: BoxFit.fitHeight,
-                                          image: NetworkImage(
-                                            categProd[index].image,
-                                          ))),
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  child: Text(
-                                    categProd[index].name,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                CartButtons(
-                                  onPressedAdd: () {},
-                                  onPressedRemove: () {},
-                                  isInStock: true,
-                                  quantity: 0,
-                                  price: 100,
-                                  sizeFactor: 1.1,
-                                  onlyPrice: true,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                      return _buildInkProduct(context, categProd, index);
                     }),
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  InkWell _buildInkProduct(BuildContext context, List<ProductDto> categProd, int index) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProductScreen(
+                    product: categProd[index],
+                  )),
+        );
+      },
+      child: Card(
+        color: Colors.white,
+        child: SizedBox(
+          height: 200,
+          child: Column(
+            children: [
+              Container(
+                height: 80,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        fit: BoxFit.fitHeight,
+                        image: NetworkImage(
+                          categProd[index].image,
+                        ))),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  categProd[index].name,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CartButtons(
+                onPressedAdd: () {},
+                onPressedRemove: () {},
+                isInStock: true,
+                quantity: 0,
+                price: 100,
+                sizeFactor: 1.1,
+                onlyPrice: true,
+              ),
+            ],
           ),
         ),
       ),

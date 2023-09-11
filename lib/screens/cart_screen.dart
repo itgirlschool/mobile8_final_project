@@ -19,7 +19,6 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  //final _bloc = getIt<CartBloc>();
   final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
 
 //раскомментить для тестовых данных
@@ -117,40 +116,43 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const AppBarWidget(title: 'Корзина'),
-        drawer: const DrawerWidget(),
-        body: BlocProvider(
-          create: (_) => _bloc,
-          child: BlocListener<CartBloc, CartState>(
-            listenWhen: (previous, current) {
-              if (previous is LoadedCartState && current is PaymentErrorCartState) {
-                return true;
-              }
-              return false;
-            },
-            listener: (context, state) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Оплата не прошла'),
-                  backgroundColor: Colors.red,
-                ),
-              );
-            },
-            child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
-              return switch (state) {
-                LoadingCartState() => const Center(
-                    child: CircularProgressIndicator(),
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          appBar: const AppBarWidget(title: 'Корзина'),
+          //drawer: const DrawerWidget(),
+          body: BlocProvider(
+            create: (_) => _bloc,
+            child: BlocListener<CartBloc, CartState>(
+              listenWhen: (previous, current) {
+                if (previous is LoadedCartState && current is PaymentErrorCartState) {
+                  return true;
+                }
+                return false;
+              },
+              listener: (context, state) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Оплата не прошла'),
+                    backgroundColor: Colors.red,
                   ),
-                LoadedCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, false) : _buildEmptyCart(),
-                PaymentLoadingCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, true) : _buildEmptyCart(),
-                ErrorCartState() => const Center(
-                    child: Text('Ошибка при загрузке корзины'),
-                  ),
-                PaymentErrorCartState() => _buildPaymentError(context),
-              };
-            }),
+                );
+              },
+              child: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+                return switch (state) {
+                  LoadingCartState() => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  LoadedCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, false) : _buildEmptyCart(),
+                  PaymentLoadingCartState() => (state.cart.products.isNotEmpty) ? _buildCart(context, state, true) : _buildEmptyCart(),
+                  ErrorCartState() => const Center(
+                      child: Text('Ошибка при загрузке корзины'),
+                    ),
+                  PaymentErrorCartState() => _buildPaymentError(context),
+                };
+              }),
+            ),
           ),
         ),
       ),
