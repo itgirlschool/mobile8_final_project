@@ -3,6 +3,7 @@ import 'package:mobile8_final_project/data/repositories/user_repository.dart';
 import 'package:mobile8_final_project/screens/register_screen.dart';
 
 import '../main.dart';
+import 'categories_screen.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -21,32 +22,40 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                "assets/yarmarket_bg.jpg",
-              ),
-              opacity: 0.3,
-              fit: BoxFit.cover),
-          //   gradient: LinearGradient(
-          // begin: Alignment.topLeft,
-          // end: Alignment.bottomRight,
-          // colors: [
-          //   Color(0xffb7ff9d),
-          //   Color(0xff2abb34),
-          // ],
+          // image: DecorationImage(
+          //     image: AssetImage(
+          //       "assets/yarmarket_bg.jpg",
+          //     ),
+          //     opacity: 0.3,
+          //     fit: BoxFit.cover),
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xffb7ff9d),
+              Color(0xff2abb34),
+            ],
+          ),
         ),
         child: Center(
           child: Container(
-            padding: const EdgeInsets.only(left: 40, right: 40, top: 120),
+            padding: const EdgeInsets.only(left: 40, right: 40, top: 10),
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Image.asset(
+
+                    'assets/groceries_no_bg.png',
+                    width: 200,
+                    height: 200,
+                  ),
+
                   Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
-                    ),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    // decoration: const BoxDecoration(
+                    //   borderRadius: BorderRadius.all(Radius.circular(15)),
+                    //   color: Colors.white,
+                    // ),
                     child: const Text(
                       'Ярмаркет',
                       style: TextStyle(
@@ -62,13 +71,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       labelText: 'Логин (электронная почта)',
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
+                      enabledBorder:  OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(10),
                         ),
                         borderSide: BorderSide(
-                          color: Color(0xff7a7a7a),
-                          width: 1.0,
+                          color: Theme.of(context).colorScheme.surface,
+                          width: 0.0,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -76,8 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           Radius.circular(10),
                         ),
                         borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          width: 2.0,
+                          color: Theme.of(context).colorScheme.surface,
+                          width: 0.0,
                         ),
                       ),
                       border: const OutlineInputBorder(),
@@ -94,13 +103,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       labelText: 'Пароль',
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
+                      enabledBorder:  OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(10),
                         ),
                         borderSide: BorderSide(
-                          color: Color(0xff7a7a7a),
-                          width: 1.0,
+                          color: Theme.of(context).colorScheme.surface,
+                          width: 0.0,
                         ),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -108,8 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           Radius.circular(10),
                         ),
                         borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          width: 2.0,
+                          color: Theme.of(context).colorScheme.surface,
+                          width: 0.0,
                         ),
                       ),
                       border: const OutlineInputBorder(),
@@ -122,7 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                      backgroundColor: Color(0xffd5ffca),
+
                       minimumSize: const Size(double.infinity, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -172,9 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       String result = await getIt.get<UserRepository>().login(login, password);
       if (result == 'success') {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const CategoriesScreen()),
         );
       } else {
         _buildErrorMessage();
@@ -187,21 +197,21 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _buildErrorMessage() {
     return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Ошибка авторизации'),
-            content: const Text('Неверный логин или пароль'),
-            actions: <Widget>[
-              ElevatedButton(
-                child: const Text('ОК'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Ошибка авторизации'),
+          content: const Text('Неверный логин или пароль'),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('ОК'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

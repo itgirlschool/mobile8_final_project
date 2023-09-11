@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile8_final_project/data/dto/product_dto.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
+import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
 
 class ProductScreen extends StatefulWidget {
   final ProductDto product;
+
   ProductScreen({super.key, required this.product});
 
   @override
@@ -25,41 +27,44 @@ class _ProductScreenState extends State<ProductScreen> {
             appBar: AppBarWidget(
               title: product.name,
             ),
-            body: SingleChildScrollView(
-              child: Column(children: [
-                Container(
-                  height: 300,
-                  decoration: BoxDecoration(
-                      image:
-                          DecorationImage(image: NetworkImage(product.image))),
+            body: Container(
+              height: MediaQuery.of(context).size.height,
+              color: const Color(0xffeeeeee),
+
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: SingleChildScrollView(
+                  child: Card(
+                    color: Colors.white,
+                    child: Column(
+
+                        children: [
+                      Container(
+                        height: 300,
+                        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(product.image))),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(product.description, style: TextStyle(fontSize: 18, )),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CartButtons(
+                        onPressedAdd: (){},
+                        onPressedRemove: (){},
+                        isInStock: true,
+                        quantity: 0,
+                        price: 100,
+                        sizeFactor: 1.8,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                    ]),
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(product.description),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: isInCart
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.remove_circle_outline_sharp)),
-                            Text('1'),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.add_circle_outline_sharp))
-                          ],
-                        )
-                      : ElevatedButton(
-                          onPressed: () {
-                            isInCart = true;
-                          },
-                          child: Text('В корзину'),
-                        ),
-                )
-              ]),
+              ),
             )),
       ),
     );

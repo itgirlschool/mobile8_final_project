@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../data/model/user_model.dart';
 import '../data/repositories/user_repository.dart';
 import '../main.dart';
+import 'categories_screen.dart';
 import 'home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -155,7 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (result == 'success') {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          MaterialPageRoute(builder: (context) => const CategoriesScreen()),
         );
       } else {
         _buildErrorMessage(result);

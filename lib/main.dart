@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/data/datasource/cart_remote_datasource.dart';
 import 'package:mobile8_final_project/data/datasource/payment_remote_datasource.dart';
 import 'package:mobile8_final_project/data/datasource/user_remote_datasource.dart';
+import 'package:mobile8_final_project/screens/categories_screen.dart';
 import 'package:mobile8_final_project/screens/home_screen.dart';
 import 'package:mobile8_final_project/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,7 +60,7 @@ class FoodShopApp extends StatelessWidget {
   Widget _startingRoute() {
     UserRepository userRepository = GetIt.I.get();
     if (userRepository.isUserLoggedIn()) {
-      return const HomeScreen();
+      return const CategoriesScreen();
     }
     return const LoginScreen();
   }
