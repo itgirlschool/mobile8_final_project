@@ -5,7 +5,7 @@ import '../dto/category_dto.dart';
 class CategoriesRemoteDatasource {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<List<CategoryDto>> getAll() async {
+  Future<List<CategoryDto>> getCategories() async {
     try {
       CollectionReference categoriesCollection = firestore.collection('categories');
       QuerySnapshot categoriesSnapshot = await categoriesCollection.get();
