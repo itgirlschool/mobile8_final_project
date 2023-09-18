@@ -18,12 +18,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   Future<void> _onLoadEvent(LoadProductEvent event, Emitter<ProductState> emit) async {
-    print('Загрузка товара');
     try {
       final product = await productsRepository.getById(productId);
       final stock = product.quantity;
       final cart = await cartRepository.getCart();
-      print('Товар загружен');
       //get quantity of product in cart
       int quantityInCart =0;
       for (var i = 0; i < cart.products.length; i++) {
@@ -32,7 +30,6 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           return;
         }
       }
-      print('Количество товара в корзине: $quantityInCart');
       emit(LoadedProductState(product: product, stock: stock, inCart: quantityInCart ?? 0));
     } catch (error) {
       print('Ошибка при загрузке товара: $error');

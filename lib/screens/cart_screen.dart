@@ -277,58 +277,74 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  ListTile _buildProductTile(int index, state) {
-    return ListTile(
-      contentPadding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
-      leading: Image.network(
-        state.cart.products[index].image,
-        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-          return const Icon(Icons.image_not_supported);
-        },
-      ),
-      trailing: CartButtons(
-        onPressedAdd: () {
-          if (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)) {
-            context.read<CartBloc>().add(
-                  AddProductToCart(product: state.cart.products[index], state: state),
-                );
-          }
-        },
-        onPressedRemove: () {
-          context.read<CartBloc>().add(
-                RemoveProductFromCart(product: state.cart.products[index], state: state),
+  Widget _buildProductTile(int index, state) {
+    return Builder(
+      builder: (context) {
+        return ListTile(
+          contentPadding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
+          leading: Image.network(
+            state.cart.products[index].image,
+            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-        },
-        isInStock: (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)),
-        quantity: state.cart.products[index].quantity,
-        price: state.cart.products[index].price,
-      ),
-      title: Text(
-        state.cart.products[index].name,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: Text(
-              state.cart.products[index].description,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+            },
+            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+              return const Icon(Icons.image_not_supported);
+            },
           ),
-          Text('${state.cart.products[index].price} ₽.'),
-        ],
-      ),
+          trailing: CartButtons(
+            onPressedAdd: () {
+              if (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)) {
+                context.read<CartBloc>().add(
+                      AddProductToCart(product: state.cart.products[index], state: state),
+                    );
+              }
+            },
+            onPressedRemove: () {
+              context.read<CartBloc>().add(
+                    RemoveProductFromCart(product: state.cart.products[index], state: state),
+                  );
+            },
+            isInStock: (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)),
+            quantity: state.cart.products[index].quantity,
+            price: state.cart.products[index].price,
+          ),
+          title: Text(
+            state.cart.products[index].name,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 20,
+
+            )
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  state.cart.products[index].description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+
+                    )
+                ),
+              ),
+              SizedBox(height: 6,),
+              Text('${state.cart.products[index].price} ₽.',  style: const TextStyle(
+                fontSize: 18,
+
+              )),
+            ],
+          ),
+        );
+      }
     );
   }
 

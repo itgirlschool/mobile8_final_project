@@ -11,160 +11,6 @@ import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
 import '../bloc/products_in_category/products_in_category_bloc.dart';
 import '../bloc/products_in_category/products_in_category_state.dart';
 
-//import '../mock_data.dart';
-
-//import 'data/dto/product_dto.dart';
-
-// List<ProductDto> products = [
-//   ProductDto(
-//     id: "1",
-//     name: 'Молоко Parmalat ffffffffffffff',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-//   ProductDto(
-//     id: "2",
-//     name: 'Хлеб бородинский ',
-//     price: 50,
-//     quantity: 1,
-//     description: 'Черный, 400гр, Зерновой край',
-//     category: '3',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-//   ),
-//   ProductDto(
-//     id: "3",
-//     name: 'Молоко Parmalat',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-//   ProductDto(
-//     id: "4",
-//     name: 'Молоко Parmalat',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-//   ProductDto(
-//     id: "5",
-//     name: 'Молоко Parmalat',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-//   ProductDto(
-//     id: "6",
-//     name: 'Молоко Parmalat',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-//   ProductDto(
-//     id: "7",
-//     name: 'Молоко Parmalat',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-//   ProductDto(
-//     id: "8",
-//     name: 'Молоко Parmalat',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-//   ProductDto(
-//     id: "9",
-//     name: 'Молоко Parmalat',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-//   ProductDto(
-//     id: "10",
-//     name: 'Молоко Parmalat',
-//     price: 100,
-//     quantity: 1,
-//     description: '1л',
-//     category: '1',
-//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-//   ),
-// ];
-//
-// List categories = [
-//   {
-//     "name": "Молочные продукты",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmilk.png?alt=media&token=0c8081f0-ef0a-4b25-965e-3379a1d1e523",
-//     "category": "1",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-//   {
-//     "name": "Хлеб",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fbread.png?alt=media&token=35d8ddfc-7652-4fdb-af23-e840827b997a",
-//     "category": "3",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-//   {
-//     "name": "Мясо",
-//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-//     "category": "2",
-//   },
-// ];
 
 class ProductsInCategoryScreen extends StatefulWidget {
   final String categId;
@@ -190,19 +36,14 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     final _bloc = ProductsInCategoryBloc(GetIt.I.get(), categId, GetIt.I.get());
-    // List<ProductDto> categProd = products
-    //     .where(
-    //       (element) => element.category == categId,
-    //     )
-    //     .toList();
     return Container(
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          // floatingActionButton: const GoToCartButton(
-          //   price: 300,
-          // ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: const GoToCartButton(
+
+          ),
           appBar: AppBarWidget(
             title: categName,
           ),
@@ -253,6 +94,12 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
   }
 
   InkWell _buildInkProduct(BuildContext context, state, int index) {
+    var inCart = 0;
+    for (var i = 0; i < state.cart.products.length; i++) {
+      if (state.cart.products[i].id == state.products[index].id) {
+        inCart = state.cart.products[i].quantity;
+      }
+    }
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -296,11 +143,13 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                 height: 10,
               ),
               CartButtons(
-                onPressedAdd: () {},
-                onPressedRemove: () {},
-                isInStock: true,
-                quantity: 0,
-                price: 100,
+                onPressedAdd: () {
+                  context.read<ProductsInCategoryBloc>().add(AddProductToCart(product: state.products[index], state: state, cart: state.cart));
+                },
+                onPressedRemove: () { context.read<ProductsInCategoryBloc>().add(RemoveProductFromCart(product: state.products[index], state: state, cart: state.cart));},
+                isInStock: state.products[index].quantity > inCart,
+                quantity:  inCart,
+                price:  state.products[index].price,
                 sizeFactor: 1.1,
                 onlyPrice: true,
               ),

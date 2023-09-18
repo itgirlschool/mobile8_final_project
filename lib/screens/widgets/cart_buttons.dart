@@ -29,7 +29,7 @@ class _CartButtonsState extends State<CartButtons> {
   Widget build(BuildContext context) {
     if (widget.quantity > 0) {
       return SizedBox(
-        width: 85 * widget.sizeFactor,
+        width: 90 * widget.sizeFactor,
         child: Wrap(
           alignment: WrapAlignment.end,
           crossAxisAlignment: WrapCrossAlignment.center,

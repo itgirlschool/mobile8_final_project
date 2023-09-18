@@ -11,18 +11,18 @@ class LoadingProductsInCategoryState extends ProductsInCategoryState {
 
 class LoadedProductsInCategoryState extends ProductsInCategoryState {
   final List<Product> products;
-  final String categoryId;
+  //final String categoryId;
   final Map<String, int> stock;
   final Cart cart;
 
-  const LoadedProductsInCategoryState({required this.products, required this.categoryId, required this.stock, required this.cart, });
+  const LoadedProductsInCategoryState({required this.products, required this.stock, required this.cart, });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is LoadedProductsInCategoryState &&
           runtimeType == other.runtimeType &&
-          products == other.products;
+          cart == other.cart;
 
   @override
   int get hashCode => products.hashCode;
