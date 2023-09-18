@@ -12,7 +12,7 @@ class CategoriesRemoteDatasource {
       List<CategoryDto> categories = [];
       for (var category in categoriesSnapshot.docs) {
         var categoryData = category.data() as Map<String, dynamic>;
-        categoryData['categoryId'] = category.id;
+        categoryData['id'] = category.id;
         categories.add(CategoryDto.fromMap(categoryData));
       }
       return categories;
@@ -20,5 +20,5 @@ class CategoriesRemoteDatasource {
       print('Ошибка при получении категорий: $e');
       rethrow;
     }
-}
+  }
 }

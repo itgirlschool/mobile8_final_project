@@ -3,13 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
-import 'package:mobile8_final_project/screens/widgets/drawer.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../bloc/cart/cart_event.dart';
 import '../bloc/cart/cart_state.dart';
 import '../data/model/product_model.dart';
-import '../main.dart';
-import '../data/repositories/cart_repository.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -108,7 +105,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     //раскомментить для тестовых данных
-    final CartRepository _cartRepository = getIt<CartRepository>();
+    //final CartRepository _cartRepository = getIt<CartRepository>();
     //_cartRepository.addProductToCart(products[0]);
     //_cartRepository.addProductToCart(products[1]);
     super.initState();

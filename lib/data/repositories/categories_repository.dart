@@ -13,7 +13,7 @@ class CategoriesRepository {
       final categoriesDto = await _categoriesRemoteDatasource.getCategories();
       for (var categoryDto in categoriesDto) {
         categories.add(Category(
-          id: categoryDto.id as String,
+          id: categoryDto.id,
           name: categoryDto.name,
           image: categoryDto.image,
         ));
