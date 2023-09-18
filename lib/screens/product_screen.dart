@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/bloc/product/product_bloc.dart';
-import 'package:mobile8_final_project/data/dto/product_dto.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
 import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
+import 'package:mobile8_final_project/bloc/product/product_event.dart';
 
 import '../bloc/product/product_state.dart';
 
@@ -67,7 +67,7 @@ class _ProductScreenState extends State<ProductScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 10),
                 child: Text(state.product.description,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                     )),
               ),
@@ -75,11 +75,15 @@ class _ProductScreenState extends State<ProductScreen> {
                 height: 20,
               ),
               CartButtons(
-                onPressedAdd: () {},
-                onPressedRemove: () {},
-                isInStock: true,
-                quantity: 0,
-                price: 100,
+                onPressedAdd: () {
+                  context.read<ProductBloc>().add(AddProductToCart(product: state.product, state: state, stock: state.stock, inCart: state.inCart));
+                },
+                onPressedRemove: () {
+                  context.read<ProductBloc>().add(RemoveProductFromCart(product: state.product, state: state, stock: state.stock, inCart: state.inCart));
+                },
+                isInStock: state.stock > state.inCart,
+                quantity: state.inCart,
+                price: state.product.price,
                 sizeFactor: 1.8,
               ),
               const SizedBox(

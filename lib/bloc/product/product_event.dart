@@ -14,7 +14,9 @@ class LoadProductEvent extends ProductEvent {
 class AddProductToCart extends ProductEvent {
   final Product product;
   LoadedProductState state;
-  AddProductToCart({required this.product, required this.state});
+  final int stock;
+  final int inCart;
+  AddProductToCart({required this.product, required this.state, required this.stock, required this.inCart});
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AddProductToCart && runtimeType == other.runtimeType && product == other.product;
@@ -26,7 +28,9 @@ class AddProductToCart extends ProductEvent {
 class RemoveProductFromCart extends ProductEvent {
   final Product product;
   LoadedProductState state;
-  RemoveProductFromCart({required this.product, required this.state});
+  final int stock;
+  final int inCart;
+  RemoveProductFromCart({required this.product, required this.state, required this.stock, required this.inCart});
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is RemoveProductFromCart && runtimeType == other.runtimeType && product == other.product;

@@ -21,7 +21,7 @@ class LoadedProductState extends ProductState {
   });
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LoadedProductState && runtimeType == other.runtimeType && product == other.product;
+  bool operator ==(Object other) => identical(this, other) || other is LoadedProductState && runtimeType == other.runtimeType && inCart == other.inCart;
 
   @override
   int get hashCode => product.hashCode;

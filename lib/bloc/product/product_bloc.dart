@@ -27,10 +27,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       for (var i = 0; i < cart.products.length; i++) {
         if (cart.products[i].id == productId) {
           quantityInCart = cart.products[i].quantity;
-          return;
+
         }
       }
-      emit(LoadedProductState(product: product, stock: stock, inCart: quantityInCart ?? 0));
+      emit(LoadedProductState(product: product, stock: stock, inCart: quantityInCart));
     } catch (error) {
       print('Ошибка при загрузке товара: $error');
       emit(ErrorProductState());
