@@ -62,12 +62,13 @@ class ProductsInCategoryBloc extends Bloc<ProductsInCategoryEvent, ProductsInCat
   Future<void> _onRemoveEvent(RemoveProductFromCart event, Emitter<ProductsInCategoryState> emit) async {
     //показываем на экране новую корзину
     Cart cart = Cart(products: [
-      for (var item in event.state.cart.products)
+      for (var item in event.cart.products)
         if (item.id == event.product.id && item.quantity > 1)
           Product(id: item.id, name: item.name, price: item.price, quantity: item.quantity - 1, image: item.image, category: item.category, description: item.description)
-        else if (item.quantity > 1)
+        else if (item.id != event.product.id && item.quantity > 0)
           Product(id: item.id, name: item.name, price: item.price, quantity: item.quantity, image: item.image, category: item.category, description: item.description)
-    ], totalPrice: event.state.cart.totalPrice - event.product.price);
+    ], totalPrice: event.cart.totalPrice - event.product.price);
+    print(cart.products);
     emit(LoadedProductsInCategoryState(cart: cart, stock: event.state.stock, products: event.state.products));
     try {
       //удаляем товар из корзины

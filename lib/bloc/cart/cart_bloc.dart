@@ -87,7 +87,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       for (var item in event.state.cart.products)
         if (item.id == event.product.id && item.quantity > 1)
           Product(id: item.id, name: item.name, price: item.price, quantity: item.quantity - 1, image: item.image, category: item.category, description: item.description)
-        else if (item.quantity > 1)
+        else if (item.id != event.product.id && item.quantity > 0)
           Product(id: item.id, name: item.name, price: item.price, quantity: item.quantity, image: item.image, category: item.category, description: item.description)
     ], totalPrice: event.state.cart.totalPrice - event.product.price);
     emit(LoadedCartState(cart: cart, stock: event.state.stock, address: event.state.address));
