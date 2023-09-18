@@ -29,7 +29,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           drawer: const DrawerWidget(),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
           floatingActionButton: const GoToCartButton(
-            price: 300,
           ),
           appBar: const AppBarWidget(
             title: 'Ярмаркет',
@@ -60,7 +59,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   Widget _buildCategories(BuildContext context, state) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
         child: Padding(
@@ -87,6 +86,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           MaterialPageRoute(
               builder: (context) => ProductsInCategoryScreen(
                     categId: state.categories[index].id,
+                    categName: state.categories[index].name,
                   )),
         );
       },
@@ -94,6 +94,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         color: Colors.white,
         elevation: 1,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               height: 100,

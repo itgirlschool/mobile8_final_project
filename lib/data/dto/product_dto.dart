@@ -25,7 +25,7 @@ class ProductDto {
       image: map['image'],
       price: map['price'],
       quantity: map['quantity'],
-      category: map['category'],
+      category: map['category'].toString(),
     );
   }
 

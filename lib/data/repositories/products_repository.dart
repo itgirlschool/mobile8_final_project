@@ -29,7 +29,7 @@ class ProductsRepository {
     }
   }
 
-  Future<Product> getByCategory(String productId) async{
+  Future<Product> getById(String productId) async{
     try {
       final productDto = await _productsRemoteDatasource.getById(productId);
       return Product(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:mobile8_final_project/data/datasource/cart_remote_datasource.dart';
 import 'package:mobile8_final_project/data/dto/cart_dto.dart';
 
@@ -5,7 +6,7 @@ import '../dto/product_dto.dart';
 import '../model/cart_model.dart';
 import '../model/product_model.dart';
 
-class CartRepository {
+class CartRepository extends ChangeNotifier{
   final CartRemoteDatasource _cartRemoteDatasource;
 
   CartRepository(this._cartRemoteDatasource);
@@ -21,6 +22,7 @@ class CartRepository {
         category: product.category,
         description: product.description,
       ));
+      notifyListeners();
     } catch (e) {
       print('Ошибка при добавлении товара в корзину: $e');
     }
@@ -29,6 +31,7 @@ class CartRepository {
   Future<void> removeProductFromCart(String productId) async {
     try {
       await _cartRemoteDatasource.removeProductFromCart(productId);
+      notifyListeners();
     } catch (e) {
       print('Ошибка при удалении товара из корзины: $e');
     }
@@ -37,6 +40,7 @@ class CartRepository {
   Future<void> removeAllProductsFromCart() async {
     try {
       await _cartRemoteDatasource.clearCart();
+      notifyListeners();
     } catch (e) {
       print('Ошибка при удалении всех товаров из корзины: $e');
     }

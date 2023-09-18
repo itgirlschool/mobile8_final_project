@@ -1,234 +1,266 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobile8_final_project/bloc/products_in_category/products_in_category_event.dart';
 import 'package:mobile8_final_project/data/dto/product_dto.dart';
 import 'package:mobile8_final_project/screens/product_screen.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
 import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
 
+import '../bloc/products_in_category/products_in_category_bloc.dart';
+import '../bloc/products_in_category/products_in_category_state.dart';
+
 //import '../mock_data.dart';
 
 //import 'data/dto/product_dto.dart';
 
-List<ProductDto> products = [
-  ProductDto(
-    id: "1",
-    name: 'Молоко Parmalat ffffffffffffff',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-  ProductDto(
-    id: "2",
-    name: 'Хлеб бородинский ',
-    price: 50,
-    quantity: 1,
-    description: 'Черный, 400гр, Зерновой край',
-    category: '3',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  ),
-  ProductDto(
-    id: "3",
-    name: 'Молоко Parmalat',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-  ProductDto(
-    id: "4",
-    name: 'Молоко Parmalat',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-  ProductDto(
-    id: "5",
-    name: 'Молоко Parmalat',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-  ProductDto(
-    id: "6",
-    name: 'Молоко Parmalat',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-  ProductDto(
-    id: "7",
-    name: 'Молоко Parmalat',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-  ProductDto(
-    id: "8",
-    name: 'Молоко Parmalat',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-  ProductDto(
-    id: "9",
-    name: 'Молоко Parmalat',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-  ProductDto(
-    id: "10",
-    name: 'Молоко Parmalat',
-    price: 100,
-    quantity: 1,
-    description: '1л',
-    category: '1',
-    image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  ),
-];
-
-List categories = [
-  {
-    "name": "Молочные продукты",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmilk.png?alt=media&token=0c8081f0-ef0a-4b25-965e-3379a1d1e523",
-    "category": "1",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-  {
-    "name": "Хлеб",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fbread.png?alt=media&token=35d8ddfc-7652-4fdb-af23-e840827b997a",
-    "category": "3",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-  {
-    "name": "Мясо",
-    "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-    "category": "2",
-  },
-];
+// List<ProductDto> products = [
+//   ProductDto(
+//     id: "1",
+//     name: 'Молоко Parmalat ffffffffffffff',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+//   ProductDto(
+//     id: "2",
+//     name: 'Хлеб бородинский ',
+//     price: 50,
+//     quantity: 1,
+//     description: 'Черный, 400гр, Зерновой край',
+//     category: '3',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
+//   ),
+//   ProductDto(
+//     id: "3",
+//     name: 'Молоко Parmalat',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+//   ProductDto(
+//     id: "4",
+//     name: 'Молоко Parmalat',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+//   ProductDto(
+//     id: "5",
+//     name: 'Молоко Parmalat',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+//   ProductDto(
+//     id: "6",
+//     name: 'Молоко Parmalat',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+//   ProductDto(
+//     id: "7",
+//     name: 'Молоко Parmalat',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+//   ProductDto(
+//     id: "8",
+//     name: 'Молоко Parmalat',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+//   ProductDto(
+//     id: "9",
+//     name: 'Молоко Parmalat',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+//   ProductDto(
+//     id: "10",
+//     name: 'Молоко Parmalat',
+//     price: 100,
+//     quantity: 1,
+//     description: '1л',
+//     category: '1',
+//     image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
+//   ),
+// ];
+//
+// List categories = [
+//   {
+//     "name": "Молочные продукты",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmilk.png?alt=media&token=0c8081f0-ef0a-4b25-965e-3379a1d1e523",
+//     "category": "1",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+//   {
+//     "name": "Хлеб",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fbread.png?alt=media&token=35d8ddfc-7652-4fdb-af23-e840827b997a",
+//     "category": "3",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+//   {
+//     "name": "Мясо",
+//     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
+//     "category": "2",
+//   },
+// ];
 
 class ProductsInCategoryScreen extends StatefulWidget {
   final String categId;
+  final String categName;
 
-  const ProductsInCategoryScreen({super.key, required this.categId});
+  const ProductsInCategoryScreen({super.key, required this.categId, required this.categName});
 
   @override
-  State<ProductsInCategoryScreen> createState() => _ProductsInCategoryScreenState(categId);
+  State<ProductsInCategoryScreen> createState() => _ProductsInCategoryScreenState(categId: categId, categName: categName);
 }
 
 class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
-  String categId;
+  final String categId;
+  final String categName;
 
-  _ProductsInCategoryScreenState(this.categId);
+  _ProductsInCategoryScreenState({required this.categId, required this.categName});
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<ProductDto> categProd = products
-        .where(
-          (element) => element.category == categId,
-        )
-        .toList();
+    final _bloc = ProductsInCategoryBloc(GetIt.I.get(), categId, GetIt.I.get());
+    // List<ProductDto> categProd = products
+    //     .where(
+    //       (element) => element.category == categId,
+    //     )
+    //     .toList();
     return Container(
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: const GoToCartButton(
-            price: 300,
-          ),
+          // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          // floatingActionButton: const GoToCartButton(
+          //   price: 300,
+          // ),
           appBar: AppBarWidget(
-            title: categories[int.parse(categId) - 1]['name'],
+            title: categName,
           ),
-          body: Container(
-            height: MediaQuery.of(context).size.height,
-            color: const Color(0xfffce6ee),
-            //color: Color(0xffe2f5d6),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: SingleChildScrollView(
-                child: GridView.builder(
-                    physics: const ScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      //childAspectRatio: 9/8,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                    ),
-                    itemCount: categProd.length,
-                    itemBuilder: (_, index) {
-                      return _buildInkProduct(context, categProd, index);
-                    }),
-              ),
-            ),
+          body: BlocProvider(
+            create: (_) => _bloc,
+            child: BlocBuilder<ProductsInCategoryBloc, ProductsInCategoryState>(builder: (context, state) {
+              return switch (state) {
+                LoadingProductsInCategoryState() => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                LoadedProductsInCategoryState() => _buildProducts(context, state),
+                ErrorProductsInCategoryState() => const Center(
+                    child: Text('Ошибка загрузки продуктов'),
+                  ),
+              };
+            }),
           ),
         ),
       ),
     );
   }
 
-  InkWell _buildInkProduct(BuildContext context, List<ProductDto> categProd, int index) {
+  Container _buildProducts(BuildContext context, state) {
+    return Container(
+      height: MediaQuery.of(context).size.height,
+      color: const Color(0xfffce6ee),
+      //color: Color(0xffe2f5d6),
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: SingleChildScrollView(
+          child: GridView.builder(
+              physics: const ScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                //childAspectRatio: 9/8,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+              ),
+              itemCount: state.products.length,
+              itemBuilder: (_, index) {
+                return _buildInkProduct(context, state, index);
+              }),
+        ),
+      ),
+    );
+  }
+
+  InkWell _buildInkProduct(BuildContext context, state, int index) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => ProductScreen(
-                    product: categProd[index],
+                    productId: state.products[index].id,
+                productName: state.products[index].name,
                   )),
         );
       },
@@ -239,21 +271,21 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
           child: Column(
             children: [
               Container(
-                height: 80,
+                height: 100,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.fitHeight,
                         image: NetworkImage(
-                          categProd[index].image,
+                          state.products[index].image,
                         ))),
               ),
-              const SizedBox(
-                height: 5,
-              ),
+              // const SizedBox(
+              //   height: 5,
+              // ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
-                  categProd[index].name,
+                  state.products[index].name,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 15,
