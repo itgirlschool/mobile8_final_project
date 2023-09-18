@@ -62,7 +62,7 @@ class _CartButtonsState extends State<CartButtons> {
                   constraints: const BoxConstraints(),
                   iconSize: 20 * widget.sizeFactor,
                   onPressed: () {
-                    widget.onPressedAdd();
+                   if (widget.isInStock) widget.onPressedAdd();
                   },
                   icon: (widget.isInStock) ? const Icon(Icons.add_circle, color: Colors.green) : const Icon(Icons.add_circle, color: Colors.grey)),
             ),
