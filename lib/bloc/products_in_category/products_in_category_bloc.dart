@@ -15,6 +15,7 @@ class ProductsInCategoryBloc extends Bloc<ProductsInCategoryEvent, ProductsInCat
 
   ProductsInCategoryBloc(this._productsRepository, this._categoryId, this._cartRepository) : super(const LoadingProductsInCategoryState()) {
     on<LoadProductsInCategoryEvent>(_onLoadEvent);
+    on<UpdateProductsInCategoryEvent>(_onUpdateEvent);
     on<AddProductToCart>(_onAddEvent);
     on<RemoveProductFromCart>(_onRemoveEvent);
     add(LoadProductsInCategoryEvent(_categoryId));
@@ -30,6 +31,11 @@ class ProductsInCategoryBloc extends Bloc<ProductsInCategoryEvent, ProductsInCat
       print('Ошибка при загрузке товаров в категории: $error');
       emit(ErrorProductsInCategoryState());
     }
+  }
+
+  Future<void> _onUpdateEvent(UpdateProductsInCategoryEvent event, Emitter<ProductsInCategoryState> emit) async {
+    emit(const LoadingProductsInCategoryState());
+    add(LoadProductsInCategoryEvent(event.categoryId));
   }
 
   Future<void> _onAddEvent(AddProductToCart event, Emitter<ProductsInCategoryState> emit) async {

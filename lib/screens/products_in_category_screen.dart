@@ -11,7 +11,6 @@ import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
 import '../bloc/products_in_category/products_in_category_bloc.dart';
 import '../bloc/products_in_category/products_in_category_state.dart';
 
-
 class ProductsInCategoryScreen extends StatefulWidget {
   final String categId;
   final String categName;
@@ -19,14 +18,10 @@ class ProductsInCategoryScreen extends StatefulWidget {
   const ProductsInCategoryScreen({super.key, required this.categId, required this.categName});
 
   @override
-  State<ProductsInCategoryScreen> createState() => _ProductsInCategoryScreenState(categId: categId, categName: categName);
+  State<ProductsInCategoryScreen> createState() => _ProductsInCategoryScreenState();
 }
 
 class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
-  final String categId;
-  final String categName;
-
-  _ProductsInCategoryScreenState({required this.categId, required this.categName});
 
   @override
   void initState() {
@@ -35,17 +30,15 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = ProductsInCategoryBloc(GetIt.I.get(), categId, GetIt.I.get());
+    final _bloc = ProductsInCategoryBloc(GetIt.I.get(), widget.categId, GetIt.I.get());
     return Container(
       color: Colors.white,
       child: SafeArea(
         child: Scaffold(
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: const GoToCartButton(
-
-          ),
+          floatingActionButton: const GoToCartButton(),
           appBar: AppBarWidget(
-            title: categName,
+            title: widget.categName,
           ),
           body: BlocProvider(
             create: (_) => _bloc,
@@ -101,15 +94,16 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
       }
     }
     return InkWell(
-      onTap: () {
-        Navigator.push(
+      onTap: () async {
+        await Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => ProductScreen(
                     productId: state.products[index].id,
-                productName: state.products[index].name,
+                    productName: state.products[index].name,
                   )),
         );
+        context.read<ProductsInCategoryBloc>().add(UpdateProductsInCategoryEvent( categoryId:widget.categId));
       },
       child: Card(
         color: Colors.white,
@@ -146,10 +140,12 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                 onPressedAdd: () {
                   context.read<ProductsInCategoryBloc>().add(AddProductToCart(product: state.products[index], state: state, cart: state.cart));
                 },
-                onPressedRemove: () { context.read<ProductsInCategoryBloc>().add(RemoveProductFromCart(product: state.products[index], state: state, cart: state.cart));},
+                onPressedRemove: () {
+                  context.read<ProductsInCategoryBloc>().add(RemoveProductFromCart(product: state.products[index], state: state, cart: state.cart));
+                },
                 isInStock: state.products[index].quantity > inCart,
-                quantity:  inCart,
-                price:  state.products[index].price,
+                quantity: inCart,
+                price: state.products[index].price,
                 sizeFactor: 1.1,
                 onlyPrice: true,
               ),

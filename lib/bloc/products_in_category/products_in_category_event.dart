@@ -12,6 +12,11 @@ class LoadProductsInCategoryEvent extends ProductsInCategoryEvent {
   LoadProductsInCategoryEvent(this.categoryId);
 }
 
+class UpdateProductsInCategoryEvent extends ProductsInCategoryEvent {
+  final String categoryId;
+  UpdateProductsInCategoryEvent({required this.categoryId});
+}
+
 // Событие добавления товара в корзину
 class AddProductToCart extends ProductsInCategoryEvent {
   final Product product;

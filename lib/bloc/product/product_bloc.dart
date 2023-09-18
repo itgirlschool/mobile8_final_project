@@ -23,11 +23,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       final stock = product.quantity;
       final cart = await cartRepository.getCart();
       //get quantity of product in cart
-      int quantityInCart =0;
+      int quantityInCart = 0;
       for (var i = 0; i < cart.products.length; i++) {
         if (cart.products[i].id == productId) {
           quantityInCart = cart.products[i].quantity;
-
         }
       }
       emit(LoadedProductState(product: product, stock: stock, inCart: quantityInCart));
@@ -38,11 +37,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   Future<void> _onAddEvent(AddProductToCart event, Emitter<ProductState> emit) async {
+    final stock = event.product.quantity;
+    final quantityInCart = event.state.inCart + 1;
+    emit(LoadedProductState(product: event.product, stock: stock, inCart: quantityInCart));
     try {
       await cartRepository.addProductToCart(event.product);
-      final stock = event.product.quantity;
-      final quantityInCart = event.state.inCart + 1;
-      emit(LoadedProductState(product: event.product, stock: stock, inCart: quantityInCart));
     } catch (error) {
       print('Ошибка при добавлении товара в корзину: $error');
       emit(ErrorProductState());
@@ -50,11 +49,11 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   }
 
   Future<void> _onRemoveEvent(RemoveProductFromCart event, Emitter<ProductState> emit) async {
+    final stock = event.product.quantity;
+    final quantityInCart = event.state.inCart - 1;
+    emit(LoadedProductState(product: event.product, stock: stock, inCart: quantityInCart));
     try {
       await cartRepository.removeProductFromCart(event.product.id);
-      final stock = event.product.quantity;
-      final quantityInCart = event.state.inCart - 1;
-      emit(LoadedProductState(product: event.product, stock: stock, inCart: quantityInCart));
     } catch (error) {
       print('Ошибка при удалении товара из корзины: $error');
       emit(ErrorProductState());
