@@ -7,8 +7,11 @@ import '../../bloc/go_to_cart/go_to_cart_state.dart';
 import '../cart_screen.dart';
 
 class GoToCartButton extends StatefulWidget {
+  final Function onPressed;
+
   const GoToCartButton({
     super.key,
+    required this.onPressed,
   });
 
   @override
@@ -50,7 +53,7 @@ class _GoToCartButtonState extends State<GoToCartButton> {
               side: const BorderSide(color: Color(0xffffce50), width: 0),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));
+              widget.onPressed();
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

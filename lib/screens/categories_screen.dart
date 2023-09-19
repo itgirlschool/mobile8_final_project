@@ -9,6 +9,7 @@ import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
 
 import '../bloc/categories/categories_bloc.dart';
 import '../bloc/categories/categories_state.dart';
+import 'cart_screen.dart';
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({super.key});
 
@@ -28,7 +29,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           backgroundColor: Colors.white,
           drawer: const DrawerWidget(),
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: const GoToCartButton(
+          floatingActionButton: GoToCartButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));},
           ),
           appBar: const AppBarWidget(
             title: 'Ярмаркет',

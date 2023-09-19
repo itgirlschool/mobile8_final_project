@@ -8,6 +8,7 @@ import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
 import 'package:mobile8_final_project/bloc/product/product_event.dart';
 
 import '../bloc/product/product_state.dart';
+import 'cart_screen.dart';
 
 class ProductScreen extends StatefulWidget {
   final String productId;
@@ -29,25 +30,30 @@ class _ProductScreenState extends State<ProductScreen> {
     return Container(
       color: Colors.white,
       child: SafeArea(
-        child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: const GoToCartButton(),
-          appBar: AppBarWidget(
-            title: widget.productName,
-          ),
-          body: BlocProvider(
-            create: (context) => _bloc,
-            child: BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
-              return switch (state) {
-                LoadingProductState() => const Center(child: CircularProgressIndicator()),
-                LoadedProductState() => _buildProduct(context, state),
-                ErrorProductState() => const Center(child: Text('Ошибка при загрузке товара')),
-              };
-            }),
-          ),
+        child: BlocProvider(
+          create: (context) => _bloc,
+          child: BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+            return switch (state) {
+              LoadingProductState() => _buildScaffold(context, _bloc, const Center(child: CircularProgressIndicator())),
+              LoadedProductState() => _buildScaffold(context, _bloc, _buildProduct(context, state)),
+              ErrorProductState() => _buildScaffold(context, _bloc, const Center(child: Text('Ошибка загрузки товара'))),
+            };
+          }),
         ),
+
       ),
     );
+  }
+
+  Scaffold _buildScaffold(BuildContext context, ProductBloc _bloc, Widget child) {
+    return Scaffold(
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: GoToCartButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));},),
+        appBar: AppBarWidget(
+          title: widget.productName,
+        ),
+        body: child,
+      );
   }
 
   Widget _buildProduct(BuildContext context, state) {

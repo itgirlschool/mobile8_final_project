@@ -10,6 +10,7 @@ import 'package:mobile8_final_project/screens/widgets/go_to_cart_button.dart';
 
 import '../bloc/products_in_category/products_in_category_bloc.dart';
 import '../bloc/products_in_category/products_in_category_state.dart';
+import 'cart_screen.dart';
 
 class ProductsInCategoryScreen extends StatefulWidget {
   final String categId;
@@ -22,7 +23,6 @@ class ProductsInCategoryScreen extends StatefulWidget {
 }
 
 class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -34,53 +34,91 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
     return Container(
       color: Colors.white,
       child: SafeArea(
-        child: Scaffold(
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: const GoToCartButton(),
-          appBar: AppBarWidget(
-            title: widget.categName,
-          ),
-          body: BlocProvider(
-            create: (_) => _bloc,
-            child: BlocBuilder<ProductsInCategoryBloc, ProductsInCategoryState>(builder: (context, state) {
-              return switch (state) {
-                LoadingProductsInCategoryState() => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                LoadedProductsInCategoryState() => _buildProducts(context, state),
-                ErrorProductsInCategoryState() => const Center(
-                    child: Text('Ошибка загрузки продуктов'),
-                  ),
-              };
-            }),
-          ),
+        child: BlocProvider(
+          create: (_) => _bloc,
+          child: BlocBuilder<ProductsInCategoryBloc, ProductsInCategoryState>(builder: (context, state) {
+            return switch (state) {
+              LoadingProductsInCategoryState() => _buildLoading(),
+              LoadedProductsInCategoryState() => _buildProducts(context, state),
+              ErrorProductsInCategoryState() => _buildError(),
+            };
+          }),
         ),
       ),
     );
   }
 
-  Container _buildProducts(BuildContext context, state) {
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      color: const Color(0xfffce6ee),
-      //color: Color(0xffe2f5d6),
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          child: GridView.builder(
-              physics: const ScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 200,
-                //childAspectRatio: 9/8,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: state.products.length,
-              itemBuilder: (_, index) {
-                return _buildInkProduct(context, state, index);
-              }),
+
+  Widget _buildLoading() {
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: GoToCartButton(
+        onPressed: () async {
+          await Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));
+          context.read<ProductsInCategoryBloc>().add(UpdateProductsInCategoryEvent(categoryId: widget.categId));
+        },
+      ),
+      appBar: AppBarWidget(
+        title: widget.categName,
+      ),
+      body: const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Widget _buildError() {
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: GoToCartButton(
+        onPressed: () async {
+          await Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));
+          context.read<ProductsInCategoryBloc>().add(UpdateProductsInCategoryEvent(categoryId: widget.categId));
+        },
+      ),
+      appBar: AppBarWidget(
+        title: widget.categName,
+      ),
+      body: const Center(
+        child: Text('Ошибка загрузки продуктов'),
+      ),
+    );
+  }
+
+  Widget _buildProducts(BuildContext context, state) {
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: GoToCartButton(
+        onPressed: () async {
+          await Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));
+          context.read<ProductsInCategoryBloc>().add(UpdateProductsInCategoryEvent(categoryId: widget.categId));
+        },
+      ),
+      appBar: AppBarWidget(
+        title: widget.categName,
+      ),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        color: const Color(0xfffce6ee),
+        //color: Color(0xffe2f5d6),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: SingleChildScrollView(
+            child: GridView.builder(
+                physics: const ScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200,
+                  //childAspectRatio: 9/8,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                ),
+                itemCount: state.products.length,
+                itemBuilder: (_, index) {
+                  return _buildInkProduct(context, state, index);
+                }),
+          ),
         ),
       ),
     );
@@ -103,7 +141,7 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                     productName: state.products[index].name,
                   )),
         );
-        context.read<ProductsInCategoryBloc>().add(UpdateProductsInCategoryEvent( categoryId:widget.categId));
+        context.read<ProductsInCategoryBloc>().add(UpdateProductsInCategoryEvent(categoryId: widget.categId));
       },
       child: Card(
         color: Colors.white,
@@ -146,7 +184,7 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                 isInStock: state.products[index].quantity > inCart,
                 quantity: inCart,
                 price: state.products[index].price,
-                sizeFactor: 1.1,
+                sizeFactor: 1.2,
                 onlyPrice: true,
               ),
             ],

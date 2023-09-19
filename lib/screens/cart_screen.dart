@@ -251,14 +251,14 @@ class _CartScreenState extends State<CartScreen> {
                           children: [
                             const Text(
                               'Оформить заказ',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(
                               width: 15,
                             ),
                             Text(
                               '${state.cart.totalPrice} ₽',
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                           ],
                         ),
@@ -312,6 +312,7 @@ class _CartScreenState extends State<CartScreen> {
             isInStock: (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)),
             quantity: state.cart.products[index].quantity,
             price: state.cart.products[index].price,
+            sizeFactor: 1.2,
           ),
           title: Text(
             state.cart.products[index].name,
