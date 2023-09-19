@@ -29,7 +29,7 @@ class _CartButtonsState extends State<CartButtons> {
   Widget build(BuildContext context) {
     if (widget.quantity > 0) {
       return SizedBox(
-        width: 85 * widget.sizeFactor,
+        width: 90 * widget.sizeFactor,
         child: Wrap(
           alignment: WrapAlignment.end,
           crossAxisAlignment: WrapCrossAlignment.center,
@@ -62,7 +62,7 @@ class _CartButtonsState extends State<CartButtons> {
                   constraints: const BoxConstraints(),
                   iconSize: 20 * widget.sizeFactor,
                   onPressed: () {
-                    widget.onPressedAdd();
+                   if (widget.isInStock) widget.onPressedAdd();
                   },
                   icon: (widget.isInStock) ? const Icon(Icons.add_circle, color: Colors.green) : const Icon(Icons.add_circle, color: Colors.grey)),
             ),

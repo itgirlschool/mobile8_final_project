@@ -3,13 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
-import 'package:mobile8_final_project/screens/widgets/drawer.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../bloc/cart/cart_event.dart';
 import '../bloc/cart/cart_state.dart';
 import '../data/model/product_model.dart';
-import '../main.dart';
-import '../data/repositories/cart_repository.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -21,98 +18,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
 
-//раскомментить для тестовых данных
-  // Cart cart = Cart(
-  //   products: [
-  //     Product(
-  //       id: "1",
-  //       name: 'Молоко Parmalat',
-  //       price: 100,
-  //       quantity: 1,
-  //       description: '1л',
-  //       category: '1',
-  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  //     ),
-  //     Product(
-  //       id: "2",
-  //       name: 'Хлеб бородинский ',
-  //       price: 50,
-  //       quantity: 1,
-  //       description: 'Белый',
-  //       category: '3',
-  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  //     ),
-  //     Product(
-  //       id: "1",
-  //       name: 'Молоко Parmalat',
-  //       price: 100,
-  //       quantity: 1,
-  //       description: '1л',
-  //       category: '1',
-  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  //     ),
-  //     Product(
-  //       id: "2",
-  //       name: 'Хлеб бородинский ',
-  //       price: 50,
-  //       quantity: 1,
-  //       description: 'Белый',
-  //       category: '3',
-  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  //     ),
-  //   ],
-  //   totalPrice: 150,
-  // );
-
-  List<Product> products = [
-    Product(
-      id: "7feHotmB2nnrRB8KOvXB",
-      name: 'Молоко Parmalat',
-      price: 100,
-      quantity: 1,
-      description: '1л',
-      category: '1',
-      image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-    ),
-    Product(
-      id: "pflljuRHtgBBMK2jEnPI",
-      name: 'Хлеб бородинский ',
-      price: 50,
-      quantity: 1,
-      description: 'Черный, 400гр, Зерновой край',
-      category: '3',
-      image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-    ),
-  ];
-
-  // List categories = [
-  //   {
-  //     "name": "Молочные продукты",
-  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmilk.png?alt=media&token=0c8081f0-ef0a-4b25-965e-3379a1d1e523",
-  //     "category": "1",
-  //   },
-  //   {
-  //     "name": "Мясо",
-  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-  //     "category": "1",
-  //   },
-  //   {
-  //     "name": "Хлеб",
-  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fbread.png?alt=media&token=35d8ddfc-7652-4fdb-af23-e840827b997a",
-  //     "category": "1",
-  //   },
-  // ];
-  //
-  // final String _address = 'Ленинского комсомола 1А, кв. 10';
-
-  @override
-  void initState() {
-    //раскомментить для тестовых данных
-    final CartRepository _cartRepository = getIt<CartRepository>();
-    //_cartRepository.addProductToCart(products[0]);
-    //_cartRepository.addProductToCart(products[1]);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -254,14 +159,14 @@ class _CartScreenState extends State<CartScreen> {
                           children: [
                             const Text(
                               'Оформить заказ',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                             const SizedBox(
                               width: 15,
                             ),
                             Text(
                               '${state.cart.totalPrice} ₽',
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                             ),
                           ],
                         ),
@@ -280,58 +185,65 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  ListTile _buildProductTile(int index, state) {
-    return ListTile(
-      contentPadding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
-      leading: Image.network(
-        state.cart.products[index].image,
-        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-          return const Icon(Icons.image_not_supported);
-        },
-      ),
-      trailing: CartButtons(
-        onPressedAdd: () {
-          if (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)) {
-            context.read<CartBloc>().add(
-                  AddProductToCart(product: state.cart.products[index], state: state),
-                );
-          }
-        },
-        onPressedRemove: () {
-          context.read<CartBloc>().add(
-                RemoveProductFromCart(product: state.cart.products[index], state: state),
-              );
-        },
-        isInStock: (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)),
-        quantity: state.cart.products[index].quantity,
-        price: state.cart.products[index].price,
-      ),
-      title: Text(
-        state.cart.products[index].name,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: Text(
-              state.cart.products[index].description,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
+  Widget _buildProductTile(int index, state) {
+    return Builder(
+      builder: (context) {
+        return ListTile(
+          contentPadding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
+          leading: Image.network(
+            state.cart.products[index].image,
+            width: 60,
           ),
-          Text('${state.cart.products[index].price} ₽.'),
-        ],
-      ),
+          trailing: CartButtons(
+            onPressedAdd: () {
+              if (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)) {
+                context.read<CartBloc>().add(
+                      AddProductToCart(product: state.cart.products[index], state: state),
+                    );
+              }
+            },
+            onPressedRemove: () {
+              context.read<CartBloc>().add(
+                    RemoveProductFromCart(product: state.cart.products[index], state: state),
+                  );
+            },
+            isInStock: (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)),
+            quantity: state.cart.products[index].quantity,
+            price: state.cart.products[index].price,
+            sizeFactor: 1.2,
+          ),
+          title: Text(
+            state.cart.products[index].name,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 18,
+
+            )
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  state.cart.products[index].description,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 15,
+
+                    )
+                ),
+              ),
+              SizedBox(height: 6,),
+              Text('${state.cart.products[index].price} ₽.',  style: const TextStyle(
+                fontSize: 16,
+
+              )),
+            ],
+          ),
+        );
+      }
     );
   }
 
