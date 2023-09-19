@@ -108,6 +108,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       if (result == 'success') {
         //если оплата прошла успешно, то добавляем заказ и очищаем корзину
         await _orderRepository.addOrder();
+        _cartRepository.notify();
       } else {
         emit(PaymentErrorCartState());
       }

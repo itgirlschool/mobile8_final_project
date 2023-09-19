@@ -103,4 +103,8 @@ class CartRepository extends ChangeNotifier{
       rethrow;
     }
   }
+
+  void notify() {
+    notifyListeners();
+  }
 }
