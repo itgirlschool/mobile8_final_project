@@ -25,7 +25,6 @@ class OrdersRemoteDatasource {
         await ordersCollection.doc(userId).collection('userOrders').add(
               order,
             );
-        //TODO: раскомментить, когда не нужны будут тестовые данные корзины
         await cartRemoteDatasource.clearCart();
       } catch (e) {
         print('Ошибка при добавлении заказа: $e');

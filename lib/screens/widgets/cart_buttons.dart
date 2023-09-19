@@ -112,7 +112,7 @@ class _CartButtonsState extends State<CartButtons> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Text(
             '${widget.price.toString()} ₽',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
           ),
         ),
       );

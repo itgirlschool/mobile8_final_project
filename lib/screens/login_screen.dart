@@ -22,12 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          // image: DecorationImage(
-          //     image: AssetImage(
-          //       "assets/yarmarket_bg.jpg",
-          //     ),
-          //     opacity: 0.3,
-          //     fit: BoxFit.cover),
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -52,10 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   Container(
                     padding: const EdgeInsets.only(bottom: 10),
-                    // decoration: const BoxDecoration(
-                    //   borderRadius: BorderRadius.all(Radius.circular(15)),
-                    //   color: Colors.white,
-                    // ),
                     child: const Text(
                       'Ярмаркет',
                       style: TextStyle(
