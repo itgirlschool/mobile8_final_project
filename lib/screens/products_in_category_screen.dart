@@ -158,9 +158,6 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                           state.products[index].image,
                         ))),
               ),
-              // const SizedBox(
-              //   height: 5,
-              // ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text(
@@ -171,9 +168,7 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
+
               CartButtons(
                 onPressedAdd: () {
                   context.read<ProductsInCategoryBloc>().add(AddProductToCart(product: state.products[index], state: state, cart: state.cart));

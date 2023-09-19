@@ -16,10 +16,11 @@ class OrdersHistoryScreen extends StatefulWidget {
 }
 
 class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
-  final _bloc = OrdersHistoryBloc(getIt<OrdersRepository>());
+
 
   @override
   Widget build(BuildContext context) {
+    final _bloc = OrdersHistoryBloc(getIt<OrdersRepository>());
     return Container(
       color: Colors.white,
       child: SafeArea(

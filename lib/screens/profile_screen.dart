@@ -16,7 +16,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   //объявляем переменную блока чеоез конструктор гетит
-  final _bloc = ProfileBloc(getIt<UserRepository>());
+
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   String _newUserName = '';
   String _newUserPhone = '';
@@ -24,6 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final _bloc = ProfileBloc(getIt<UserRepository>());
     return Container(
       color: Colors.white,
       child: SafeArea(

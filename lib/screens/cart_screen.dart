@@ -6,7 +6,6 @@ import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
 import '../bloc/cart/cart_bloc.dart';
 import '../bloc/cart/cart_event.dart';
 import '../bloc/cart/cart_state.dart';
-import '../data/model/product_model.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -16,11 +15,9 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
-
-
   @override
   Widget build(BuildContext context) {
+    final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
     return Container(
       color: Colors.white,
       child: SafeArea(

@@ -38,8 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: currentIndex,
           backgroundColor: Colors.transparent,
           elevation: 0,
-
-
           onTap: (value) {
             // Respond to item press.
             setState(() => currentIndex = value);
