@@ -49,6 +49,7 @@ class CartRepository extends ChangeNotifier{
   Future<Cart> getCart() async {
     try {
       final CartDto cartDto = await _cartRemoteDatasource.getCart();
+      //notifyListeners();
       return Cart(
         products: [
           for (var item in cartDto.products.entries)

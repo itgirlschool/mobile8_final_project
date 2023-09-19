@@ -18,98 +18,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
 
-//раскомментить для тестовых данных
-  // Cart cart = Cart(
-  //   products: [
-  //     Product(
-  //       id: "1",
-  //       name: 'Молоко Parmalat',
-  //       price: 100,
-  //       quantity: 1,
-  //       description: '1л',
-  //       category: '1',
-  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  //     ),
-  //     Product(
-  //       id: "2",
-  //       name: 'Хлеб бородинский ',
-  //       price: 50,
-  //       quantity: 1,
-  //       description: 'Белый',
-  //       category: '3',
-  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  //     ),
-  //     Product(
-  //       id: "1",
-  //       name: 'Молоко Parmalat',
-  //       price: 100,
-  //       quantity: 1,
-  //       description: '1л',
-  //       category: '1',
-  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-  //     ),
-  //     Product(
-  //       id: "2",
-  //       name: 'Хлеб бородинский ',
-  //       price: 50,
-  //       quantity: 1,
-  //       description: 'Белый',
-  //       category: '3',
-  //       image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-  //     ),
-  //   ],
-  //   totalPrice: 150,
-  // );
-
-  List<Product> products = [
-    Product(
-      id: "7feHotmB2nnrRB8KOvXB",
-      name: 'Молоко Parmalat',
-      price: 100,
-      quantity: 1,
-      description: '1л',
-      category: '1',
-      image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fparmalat.jpg?alt=media&token=02d30e57-ab38-41bf-962a-252d557b03df',
-    ),
-    Product(
-      id: "pflljuRHtgBBMK2jEnPI",
-      name: 'Хлеб бородинский ',
-      price: 50,
-      quantity: 1,
-      description: 'Черный, 400гр, Зерновой край',
-      category: '3',
-      image: 'https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/products%2Fborodinski.jpg?alt=media&token=90e2523f-4372-4ef8-9cba-5be5feb2f20e',
-    ),
-  ];
-
-  // List categories = [
-  //   {
-  //     "name": "Молочные продукты",
-  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmilk.png?alt=media&token=0c8081f0-ef0a-4b25-965e-3379a1d1e523",
-  //     "category": "1",
-  //   },
-  //   {
-  //     "name": "Мясо",
-  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fmeat.png?alt=media&token=fa75f3da-27a1-4cb5-8f6c-38f4fc12cbfc",
-  //     "category": "1",
-  //   },
-  //   {
-  //     "name": "Хлеб",
-  //     "image": "https://firebasestorage.googleapis.com/v0/b/mobile-4e919.appspot.com/o/categories%2Fbread.png?alt=media&token=35d8ddfc-7652-4fdb-af23-e840827b997a",
-  //     "category": "1",
-  //   },
-  // ];
-  //
-  // final String _address = 'Ленинского комсомола 1А, кв. 10';
-
-  @override
-  void initState() {
-    //раскомментить для тестовых данных
-    //final CartRepository _cartRepository = getIt<CartRepository>();
-    //_cartRepository.addProductToCart(products[0]);
-    //_cartRepository.addProductToCart(products[1]);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -284,17 +192,7 @@ class _CartScreenState extends State<CartScreen> {
           contentPadding: const EdgeInsets.only(left: 10, right: 0, top: 0, bottom: 0),
           leading: Image.network(
             state.cart.products[index].image,
-            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) {
-                return child;
-              }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-            errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-              return const Icon(Icons.image_not_supported);
-            },
+            width: 60,
           ),
           trailing: CartButtons(
             onPressedAdd: () {
@@ -318,7 +216,7 @@ class _CartScreenState extends State<CartScreen> {
             state.cart.products[index].name,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              fontSize: 20,
+              fontSize: 18,
 
             )
           ),
@@ -332,14 +230,14 @@ class _CartScreenState extends State<CartScreen> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 15,
 
                     )
                 ),
               ),
               SizedBox(height: 6,),
               Text('${state.cart.products[index].price} ₽.',  style: const TextStyle(
-                fontSize: 18,
+                fontSize: 16,
 
               )),
             ],
