@@ -68,7 +68,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               physics: const ScrollPhysics(),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 200, childAspectRatio: 5 / 4, crossAxisSpacing: 10, mainAxisSpacing: 10),
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 200, childAspectRatio: 7 / 6, crossAxisSpacing: 10, mainAxisSpacing: 10),
               itemCount: state.categories.length,
               itemBuilder: (_, index) {
                 return _buildCategory(context, index, state);
@@ -97,13 +97,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 100,
+              height: MediaQuery.of(context).size.height * 0.13,
               decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(state.categories[index].image))),
             ),
             Text(
               state.categories[index].name,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 14,
               ),
             ),
           ],

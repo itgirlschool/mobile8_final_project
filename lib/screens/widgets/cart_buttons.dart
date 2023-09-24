@@ -31,7 +31,7 @@ class _CartButtonsState extends State<CartButtons> {
       return SizedBox(
         width: 90 * widget.sizeFactor,
         child: Wrap(
-          alignment: WrapAlignment.end,
+          alignment: WrapAlignment.center,
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             SizedBox(
