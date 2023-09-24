@@ -110,7 +110,7 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                 shrinkWrap: true,
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   maxCrossAxisExtent: 200,
-                  //childAspectRatio: 9/8,
+                  childAspectRatio: 10/11,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                 ),
@@ -150,7 +150,7 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
           child: Column(
             children: [
               Container(
-                height: 100,
+                height: MediaQuery.of(context).size.height * 0.13,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         fit: BoxFit.fitHeight,
@@ -179,7 +179,7 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
                 isInStock: state.products[index].quantity > inCart,
                 quantity: inCart,
                 price: state.products[index].price,
-                sizeFactor: 1.2,
+                sizeFactor: 1,
                 onlyPrice: true,
               ),
             ],
