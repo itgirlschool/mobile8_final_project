@@ -6,7 +6,6 @@ import 'package:mobile8_final_project/data/datasource/payment_remote_datasource.
 import 'package:mobile8_final_project/data/datasource/products_remote_datasource.dart';
 import 'package:mobile8_final_project/data/datasource/user_remote_datasource.dart';
 import 'package:mobile8_final_project/screens/categories_screen.dart';
-import 'package:mobile8_final_project/screens/home_screen.dart';
 import 'package:mobile8_final_project/screens/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mobile8_final_project/stripe_public_key.dart';
