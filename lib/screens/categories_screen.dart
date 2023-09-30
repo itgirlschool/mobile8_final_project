@@ -19,8 +19,8 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
-  final _bloc = CategoriesBloc(GetIt.I.get());
   Widget build(BuildContext context) {
+    final _bloc = CategoriesBloc(GetIt.I.get());
     return Container(
       color: Colors.white,
       child: SafeArea(

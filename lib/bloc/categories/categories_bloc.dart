@@ -15,6 +15,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   }
 
   Future _onLoadEvent(LoadCategoriesEvent event, Emitter<CategoriesState> emit) async {
+    //print('CategoriesBloc _onLoadEvent');
     emit(const LoadingCategoriesState());
     try {
       final categories = await _repository.getCategories();
