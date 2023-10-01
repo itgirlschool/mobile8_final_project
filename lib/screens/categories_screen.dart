@@ -19,7 +19,6 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
-  final _bloc = CategoriesBloc(GetIt.I.get());
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
@@ -39,7 +38,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               color: Color(0xffd6edff),
             ),
             child: BlocProvider(
-              create: (_) => _bloc,
+              create: (_) => CategoriesBloc(GetIt.I.get()),
               child: BlocBuilder<CategoriesBloc, CategoriesState>(builder: (context, state) {
                 return switch (state) {
                   LoadingCategoriesState() => const Center(

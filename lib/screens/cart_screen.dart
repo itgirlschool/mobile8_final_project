@@ -17,7 +17,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    final _bloc = CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get());
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -25,7 +24,7 @@ class _CartScreenState extends State<CartScreen> {
           appBar: const AppBarWidget(title: 'Корзина'),
           //drawer: const DrawerWidget(),
           body: BlocProvider(
-            create: (_) => _bloc,
+            create: (_) => CartBloc(GetIt.I.get(), GetIt.I.get(), GetIt.I.get(), GetIt.I.get()),
             child: BlocListener<CartBloc, CartState>(
               listenWhen: (previous, current) {
                 if (previous is LoadedCartState && current is PaymentErrorCartState) {
@@ -242,60 +241,6 @@ class _CartScreenState extends State<CartScreen> {
         );
       }
     );
-  }
-
-  Widget _buildButtons(int index, state, onPressedAdd, onPressedRemove, addIconColor) {
-    return Builder(builder: (context) {
-      return SizedBox(
-        width: 100,
-        child: Wrap(
-          alignment: WrapAlignment.end,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            SizedBox(
-              width: 35,
-              height: 30,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                iconSize: 20,
-                onPressed: () {
-                  context.read<CartBloc>().add(
-                        RemoveProductFromCart(product: state.cart.products[index], state: state),
-                      );
-                },
-                icon: const Icon(
-                  Icons.remove_circle,
-                  color: Colors.green,
-                ),
-              ),
-            ),
-            Text(
-              '${state.cart.products[index].quantity}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            SizedBox(
-              width: 35,
-              height: 30,
-              child: IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  iconSize: 20,
-                  onPressed: () {
-                    if (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity)) {
-                      context.read<CartBloc>().add(
-                            AddProductToCart(product: state.cart.products[index], state: state),
-                          );
-                    }
-                  },
-                  icon: (state.stock[state.cart.products[index].id] != null && (state.stock[state.cart.products[index].id]! > state.cart.products[index].quantity))
-                      ? const Icon(Icons.add_circle, color: Colors.green)
-                      : const Icon(Icons.add_circle, color: Colors.grey)),
-            ),
-          ],
-        ),
-      );
-    });
   }
 
   Widget _buildPaymentError(BuildContext context) {

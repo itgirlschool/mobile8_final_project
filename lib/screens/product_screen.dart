@@ -25,18 +25,17 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = ProductBloc(GetIt.I.get(), GetIt.I.get(), widget.productId);
 
     return Container(
       color: Colors.white,
       child: SafeArea(
         child: BlocProvider(
-          create: (context) => _bloc,
+          create: (context) => ProductBloc(GetIt.I.get(), GetIt.I.get(), widget.productId),
           child: BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
             return switch (state) {
-              LoadingProductState() => _buildScaffold(context, _bloc, const Center(child: CircularProgressIndicator())),
-              LoadedProductState() => _buildScaffold(context, _bloc, _buildProduct(context, state)),
-              ErrorProductState() => _buildScaffold(context, _bloc, const Center(child: Text('Ошибка загрузки товара'))),
+              LoadingProductState() => _buildScaffold(context, const Center(child: CircularProgressIndicator())),
+              LoadedProductState() => _buildScaffold(context, _buildProduct(context, state)),
+              ErrorProductState() => _buildScaffold(context, const Center(child: Text('Ошибка загрузки товара'))),
             };
           }),
         ),
@@ -45,7 +44,7 @@ class _ProductScreenState extends State<ProductScreen> {
     );
   }
 
-  Scaffold _buildScaffold(BuildContext context, ProductBloc _bloc, Widget child) {
+  Scaffold _buildScaffold(BuildContext context, Widget child) {
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: GoToCartButton(onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => const CartScreen()));},),

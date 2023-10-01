@@ -24,13 +24,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = ProfileBloc(getIt<UserRepository>());
     return Container(
       color: Colors.white,
       child: SafeArea(
         //подключаем блок
         child: BlocProvider(
-          create: (context) => _bloc,
+          create: (context) => ProfileBloc(getIt<UserRepository>()),
           //билдим экран с помощью блок билдера
           child: BlocBuilder<ProfileBloc, ProfileState>(builder: (context, state) {
             //возвращаем виджеты в зависимости от состояния
