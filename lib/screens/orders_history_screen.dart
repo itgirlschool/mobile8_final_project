@@ -20,7 +20,6 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = OrdersHistoryBloc(getIt<OrdersRepository>());
     return Container(
       color: Colors.white,
       child: SafeArea(
@@ -38,7 +37,7 @@ class _OrdersHistoryScreenState extends State<OrdersHistoryScreen> {
                   children: [
                     Expanded(
                       child: BlocProvider(
-                        create: (_) => _bloc,
+                        create: (_) => OrdersHistoryBloc(getIt<OrdersRepository>()),
                         child: BlocBuilder<OrdersHistoryBloc, OrdersHistoryState>(builder: (context, state) {
                           return switch (state) {
                             LoadingOrdersHistoryState() => const Center(

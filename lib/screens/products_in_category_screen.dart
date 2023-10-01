@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobile8_final_project/bloc/products_in_category/products_in_category_event.dart';
-import 'package:mobile8_final_project/data/dto/product_dto.dart';
 import 'package:mobile8_final_project/screens/product_screen.dart';
 import 'package:mobile8_final_project/screens/widgets/appbar.dart';
 import 'package:mobile8_final_project/screens/widgets/cart_buttons.dart';
@@ -30,12 +29,11 @@ class _ProductsInCategoryScreenState extends State<ProductsInCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = ProductsInCategoryBloc(GetIt.I.get(), widget.categId, GetIt.I.get());
     return Container(
       color: Colors.white,
       child: SafeArea(
         child: BlocProvider(
-          create: (_) => _bloc,
+          create: (_) => ProductsInCategoryBloc(GetIt.I.get(), widget.categId, GetIt.I.get()),
           child: BlocBuilder<ProductsInCategoryBloc, ProductsInCategoryState>(builder: (context, state) {
             return switch (state) {
               LoadingProductsInCategoryState() => _buildLoading(),
